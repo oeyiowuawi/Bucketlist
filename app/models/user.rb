@@ -10,7 +10,6 @@ class User < ActiveRecord::Base
     user = find_by(email: auth_params[:email])
     if user && user.authenticate(auth_params[:password])
       user.update_attribute('active_status', true)
-      sessions[:email] = auth_params[:email]
       user
     else
       nil

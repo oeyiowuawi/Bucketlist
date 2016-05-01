@@ -29,4 +29,22 @@ RSpec.describe SessionsController, type: :request do
     end
 
   end
+
+  describe "log out" do
+    let (:user) do
+      create(:user)
+    end
+    it "allows logged in users to log out" do
+      post "/auth/login", {
+        email: user.email,
+        password: user.password
+      }
+      get '/auth/logout'
+      expect(json[:message]).to be "You have been logged out"
+    end
+    it "tells non-logged in users to login first" do
+      get '/auth/logout'
+      expect(json[:error]).to be "You need to be logged in first"
+    end
+  end
 end
