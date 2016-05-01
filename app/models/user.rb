@@ -8,7 +8,8 @@ class User < ActiveRecord::Base
 
   def self.find_by_credentials(auth_params)
     user = find_by(email: auth_params[:email])
-    if user.authenticate(auth_params[:password])
+    if user && user.authenticate(auth_params[:password])
+      user.update_attribute('active_status', true)
       user
     else
       nil
