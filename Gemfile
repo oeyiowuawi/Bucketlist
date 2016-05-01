@@ -10,6 +10,14 @@ gem 'spring', :group => :development
 
 gem 'sqlite3'
 
+gem "bcrypt"
+group :test, :development do
+  gem "rspec-rails"
+  gem "factory_girl_rails"
+  gem "pry-rails"
+  gem 'database_cleaner'
+  gem "shoulda-matchers"
+end
 
 
 # To use ActiveModel has_secure_password
