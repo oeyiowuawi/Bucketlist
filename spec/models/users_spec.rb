@@ -21,8 +21,8 @@ RSpec.describe "User", type: :model do
          subject.email = "@lekan"
          expect(subject).to be_invalid
       end
-      it "password and password_confirmation(not the same) " do
-         subject.password_confirmation = "test"
+      it "name" do
+         subject.name = "t"
          expect(subject).to be_invalid
       end
     end

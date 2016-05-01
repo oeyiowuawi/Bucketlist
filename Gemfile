@@ -14,6 +14,7 @@ gem "bcrypt"
 group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
+  gem "pry-rails"
   gem 'database_cleaner'
   gem "shoulda-matchers"
 end
