@@ -15,7 +15,7 @@ class ApplicationController < ActionController::API
   private
 
   def check_logged_in
-    render json: {mesage: "You must be logged in to access this resource "}, status: 419 unless @current_user.status_active
+    render json: {mesage: "You must be logged in to access this resource "}, status: 419 unless @current_user.active_status
   end
 
   def user_id_included_in_auth_token?
@@ -41,6 +41,7 @@ class ApplicationController < ActionController::API
   end
 
   def user_not_authenticated
-    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+    render json: { errors: "Not Authenticated" }, status: :unauthorized
   end
+  
 end

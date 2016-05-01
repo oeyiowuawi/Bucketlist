@@ -11,10 +11,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    binding.pry
     current_user.update_attribute('active_status', false)
-    session[:email] = nil
-    render json: {message: "You have been logged out"}, status: :success
+    render json: {message: "You have been logged out"}, status: 200
   end
 
   private
