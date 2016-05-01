@@ -11,6 +11,7 @@ gem 'spring', :group => :development
 gem 'sqlite3'
 
 gem "bcrypt"
+gem "jwt"
 group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
