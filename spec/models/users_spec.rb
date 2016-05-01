@@ -27,4 +27,18 @@ RSpec.describe "User", type: :model do
       end
     end
   end
+
+  describe ".find_by_credentials" do
+
+    let(:auth_params) {{email: subject.email, password: subject.password}}
+    it "returns user if correct credentials are supplied" do
+      subject.active_status = true
+      subject.save
+      expect(User.find_by_credentials(auth_params)).to eq subject
+    end
+    it "returns nil if invalid credentials are supplied" do
+      subject.email = "ikem.okonkwo@andela.com"
+      expect(User.find_by_credentials(auth_params)).to eq nil
+    end
+  end
 end
