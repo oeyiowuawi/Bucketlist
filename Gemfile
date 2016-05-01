@@ -11,10 +11,11 @@ gem 'spring', :group => :development
 gem 'sqlite3'
 
 gem "bcrypt"
-group :test do
+group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem 'database_cleaner'
+  gem "shoulda-matchers"
 end
 
 
