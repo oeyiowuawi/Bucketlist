@@ -19,6 +19,15 @@ class BucketlistsController < ApplicationController
       render json: bucketlist, status: 200
     end
   end
+
+  def show
+    bucketlist = current_user.bucket_lists.find_by(id: bucketlist_params[:id])
+    unless bucketlist.nil?
+      render json: bucketlist, status: 200
+    else
+      render json: {message: "bucketlist not found"}, status: 404
+    end
+  end
   private
   def bucketlist_params
     params.permit(:name, :id, :page, :limit, :q)

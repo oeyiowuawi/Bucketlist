@@ -11,7 +11,7 @@ RSpec.describe "getting a particular bucketlist",type: :request do
     describe "that belongs to the correct user" do
       before(:each) do
         token = token_generator(@user1)
-        headers = {"HTTP_AUTHORIZATION" => @token}
+        headers = {"HTTP_AUTHORIZATION" => token}
         get "/bucketlists/#{@bucketlist1.id}", {}, headers
       end
 
@@ -20,7 +20,7 @@ RSpec.describe "getting a particular bucketlist",type: :request do
       end
 
       it "should return only bucketlist that belogs to the User making the request" do
-        expect(json.count).to eq 1
+        expect(json["name"]).to eq @bucketlist1.name
       end
 
     end
@@ -28,7 +28,7 @@ RSpec.describe "getting a particular bucketlist",type: :request do
     describe "that doesn't belong to a user" do
       before(:each) do
         token = token_generator(@user1)
-        headers = {"HTTP_AUTHORIZATION" => @token}
+        headers = {"HTTP_AUTHORIZATION" => token}
         get "/bucketlists/#{@bucketlist2.id}", {}, headers
       end
 
