@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  # get 'bucketlists/create'
+
   resources :users, only: :create
 
   post "auth/login", to: "sessions#login"

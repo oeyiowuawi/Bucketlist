@@ -1,8 +1,8 @@
 FactoryGirl.define do
-  factory :bucketlist do
+  factory :bucket_list do
     name "MyString"
   end
-
+  
   factory :invalid_bucketlist do
     name ""
   end

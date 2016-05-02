@@ -10,10 +10,9 @@ RSpec.describe BucketlistsController, type: :request do
 
   context "creating a bucketlist with invalid request and params" do
     before(:each) do
-      let(:bucketlist) { build(:invalid_bucketlist)}
       headers = {"HTTP_AUTHORIZATION" => token_generator(user)}
       post "/bucketslists",
-      {name: invalid_bucketlist.name},
+      {name: nil},
       headers
 
     end
@@ -29,10 +28,10 @@ RSpec.describe BucketlistsController, type: :request do
 
   context "creating a bucketlist with valid request and params" do
     before(:each) do
-      let (:bucketlist) {build(:bucketlist)}
+      @bucketlist = build(:bucket_list)
       headers = {"HTTP_AUTHORIZATION" => token_generator(user)}
       post "/bucketslists",
-      {name: bucketlist.name},
+      {name: @bucketlist.name},
       headers
     end
 
@@ -41,7 +40,7 @@ RSpec.describe BucketlistsController, type: :request do
     end
 
     it "returns the location of the new bucketlist" do
-      expect(response.response).to eq bucketlist_url(bucketlist)
+      expect(response.response).to eq bucketlist_url(@bucketlist)
     end
 
     it "returns the a JSON object" do
