@@ -1,8 +1,8 @@
 RSpec.shared_examples "require log in before actions" do
-  let(:user) {build(:user)}
+  let(:user) {create(:user)}
   it "should return errors for non-logged-in user" do
     headers = {"HTTP_AUTHORIZATION" => nil}
-    post "/bucketslists",
+    post "/bucketlists",
     {name: ""},
     headers
   expect(json["errors"]).to eq "Not Authenticated"

@@ -10,6 +10,7 @@ module Request
         password: user.password
       }
       json["auth_token"]
+      # binding.pry
     end
   end
 end
