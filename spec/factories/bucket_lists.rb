@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :bucket_list do
-    name "MyString"
+    name {Faker::Name.name}
   end
-  
+
   factory :invalid_bucketlist do
     name ""
   end

@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe BucketlistsController, type: :request do
-  let (:user) do
-    create(:user)
+  before(:all)  do
+    @user = create(:user)
   end
 
 
@@ -11,8 +11,8 @@ RSpec.describe BucketlistsController, type: :request do
 
   context "creating a bucketlist with invalid request and params" do
     before(:each) do
-      user.save
-      @token = token_generator(user)
+      # user.save
+      @token = token_generator(@user)
       headers = {"HTTP_AUTHORIZATION" => @token}
       post "/bucketlists",
       {name: nil},
@@ -32,7 +32,7 @@ RSpec.describe BucketlistsController, type: :request do
   context "creating a bucketlist with valid request and params" do
     before(:each) do
       @bucketlist = build(:bucket_list)
-      headers = {"HTTP_AUTHORIZATION" => token_generator(user)}
+      headers = {"HTTP_AUTHORIZATION" => token_generator(@user)}
       post "/bucketlists",
       {name: @bucketlist.name},
       headers
@@ -43,7 +43,8 @@ RSpec.describe BucketlistsController, type: :request do
     end
 
     # it "returns the location of the new bucketlist" do
-    #   expect(response.location).to eq bucketlist_path(@bucketlist.id)
+    #   bucketlist_id = json["id"]
+    #   expect(response.location).to eq bucketlist_url(bucketlist_id)
     # end
 
     it "returns the a JSON object" do
