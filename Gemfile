@@ -18,6 +18,7 @@ group :test, :development do
   gem "pry-rails"
   gem 'database_cleaner'
   gem "shoulda-matchers"
+  gem "faker"
 end
 
 
