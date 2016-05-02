@@ -6,7 +6,7 @@ RSpec.describe BucketlistsController, type: :request do
   end
 
 
-  include_examples "require log in before actions"
+  # include_examples "require log in before actions"
   it_behaves_like "require log in before actions"
 
   context "creating a bucketlist with invalid request and params" do
