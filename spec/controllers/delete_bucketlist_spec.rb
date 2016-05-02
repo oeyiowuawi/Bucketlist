@@ -13,7 +13,11 @@ RSpec.describe "when trying to delete a bucketlist", type: :request do
       describe "that owns the  bucketlist" do
       it "returns a status code of 204" do
         token = token_generator(@user1)
-        headers = { 'HTTP_AUTHORIZATION' => token }
+        headers = {
+          'HTTP_AUTHORIZATION' => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
         delete "/bucketlists/#{@bucketlist1.id}", {}, headers
         expect(response).to have_http_status 204
       end
@@ -23,7 +27,11 @@ RSpec.describe "when trying to delete a bucketlist", type: :request do
 
       it "returns a status code of 404" do
         token = token_generator(@user1)
-        headers = { 'HTTP_AUTHORIZATION' => token }
+        headers = {
+          'HTTP_AUTHORIZATION' => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+         }
         delete "/bucketlists/#{@bucketlist2.id}", {}, headers
         expect(response).to have_http_status 404
       end

@@ -9,7 +9,11 @@ RSpec.describe "list all the bucketlists", type: :request do
   context "with valid request" do
   before(:each) do
   @token = token_generator(@user)
-  headers = {"HTTP_AUTHORIZATION" => @token}
+  headers = {
+    "HTTP_AUTHORIZATION" => @token,
+    "Content-Type" => "application/json",
+    "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+  }
   get "/bucketlists", {}, headers
   end
 

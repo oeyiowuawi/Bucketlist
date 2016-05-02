@@ -1,9 +1,12 @@
 RSpec.shared_examples "require log in before actions" do
   before(:each) do
-    headers = {"HTTP_AUTHORIZATION" => nil}
-    post "/bucketlists",
-    {name: ""},
-    headers
+    headers = {
+      "HTTP_AUTHORIZATION" => nil,
+      "Content-Type" => "application/json",
+      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+    }
+
+    post "/bucketlists", {name: nil}.to_json, headers
   end
   it "should return errors for non-logged-in user" do
 

@@ -12,10 +12,14 @@ RSpec.describe 'when trying to update a bucketlist',type: :request do
       context 'Request with valid parameters' do
         before(:each) do
           token = token_generator(@user1)
-          headers = { 'HTTP_AUTHORIZATION' => token }
+          headers = {
+            "HTTP_AUTHORIZATION" => token,
+            "Content-Type" => "application/json",
+            "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          }
           put "/bucketlists/#{@bucketlist1.id}", {
             name: 'Alan Padew'
-          }, headers
+          }.to_json, headers
         end
         it 'returns a success status code' do
           expect(response).to have_http_status 200
@@ -28,10 +32,14 @@ RSpec.describe 'when trying to update a bucketlist',type: :request do
       context 'Request with invalid Parameter' do
         before(:each) do
           token = token_generator(@user1)
-          headers = { 'HTTP_AUTHORIZATION' => token }
+          headers = {
+            "HTTP_AUTHORIZATION" => token,
+            "Content-Type" => "application/json",
+            "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          }
           put "/bucketlists/#{@bucketlist1.id}", {
             name: nil
-          }, headers
+          }.to_json, headers
         end
         it 'returns a status code of 422' do
           expect(response).to have_http_status 422
@@ -46,10 +54,14 @@ RSpec.describe 'when trying to update a bucketlist',type: :request do
     context "that doesn't belong to the user," do
       before(:each) do
         token = token_generator(@user1)
-        headers = { 'HTTP_AUTHORIZATION' => token }
+        headers = {
+          "HTTP_AUTHORIZATION" => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
         put "/bucketlists/#{@bucketlist2.id}", {
           name: 'Alan Padew'
-        }, headers
+        }.to_json, headers
 
       end
 

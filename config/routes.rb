@@ -1,8 +1,8 @@
-require "api-constraint"
+require "api_constraint"
 Rails.application.routes.draw do
 
 
-  namespace :api, path: '/', defaults: {format: :json}  do
+  namespace :api, path: '/', defaults: {format: :json}do
     post "auth/login", to: "sessions#login"
     get "auth/logout", to: "sessions#destroy"
     resources :users, only: :create
