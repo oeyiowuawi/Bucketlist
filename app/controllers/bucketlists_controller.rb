@@ -1,5 +1,6 @@
 class BucketlistsController < ApplicationController
   before_action :authenticate
+  
   def create
     bucketlist_info = bucketlist_params.merge!({created_by: current_user.id})
     bucketlist = BucketList.new(bucketlist_info)
@@ -41,6 +42,20 @@ class BucketlistsController < ApplicationController
       render json: {errors: "can't update an invalid bucketlist"}, status: 404
     end
   end
+
+  def destroy
+    bucketlist = current_user.bucket_lists.find_by(id: bucketlist_params[:id])
+     unless bucketlist.nil?
+      if bucketlist.destroy
+        head 204
+      else
+        render json: {message: "Can`t delete the bucketlist, Try again"}, status: 500
+      end
+    else
+      render json: {message: "bucketlist not found"}, status: 404
+    end
+  end
+
 
   private
   def bucketlist_params
