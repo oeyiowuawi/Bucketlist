@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe BucketlistsController, type: :request do
+RSpec.describe Api::V1::BucketlistsController, type: :request do
   before(:all)  do
     @user = create(:user)
   end
@@ -13,9 +13,13 @@ RSpec.describe BucketlistsController, type: :request do
     before(:each) do
       # user.save
       @token = token_generator(@user)
-      headers = {"HTTP_AUTHORIZATION" => @token}
+      headers = {
+        "HTTP_AUTHORIZATION" => @token,
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
       post "/bucketlists",
-      {name: nil},
+      {name: nil}.to_json,
       headers
 
     end
@@ -32,9 +36,13 @@ RSpec.describe BucketlistsController, type: :request do
   context "creating a bucketlist with valid request and params" do
     before(:each) do
       @bucketlist = build(:bucket_list)
-      headers = {"HTTP_AUTHORIZATION" => token_generator(@user)}
+      headers = {
+        "HTTP_AUTHORIZATION" => token_generator(@user),
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
       post "/bucketlists",
-      {name: @bucketlist.name},
+      {name: @bucketlist.name}.to_json,
       headers
     end
 

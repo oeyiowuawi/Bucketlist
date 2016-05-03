@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class Api::SessionsController < ApplicationController
   before_action :authenticate, only: :destroy
   def login
     user = User.find_by_credentials(auth_params)

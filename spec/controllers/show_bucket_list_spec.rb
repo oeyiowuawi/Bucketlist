@@ -11,7 +11,11 @@ RSpec.describe "getting a particular bucketlist",type: :request do
     describe "that belongs to the correct user" do
       before(:each) do
         token = token_generator(@user1)
-        headers = {"HTTP_AUTHORIZATION" => token}
+        headers = {
+          "HTTP_AUTHORIZATION" => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
         get "/bucketlists/#{@bucketlist1.id}", {}, headers
       end
 
@@ -28,7 +32,11 @@ RSpec.describe "getting a particular bucketlist",type: :request do
     describe "that doesn't belong to a user" do
       before(:each) do
         token = token_generator(@user1)
-        headers = {"HTTP_AUTHORIZATION" => token}
+        headers = {
+          "HTTP_AUTHORIZATION" => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
         get "/bucketlists/#{@bucketlist2.id}", {}, headers
       end
 
