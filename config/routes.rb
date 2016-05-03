@@ -8,7 +8,9 @@ Rails.application.routes.draw do
     resources :users, only: :create
 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
-      resources :bucketlists
+      resources :bucketlists do
+        resources :items
+      end
 
     end
 

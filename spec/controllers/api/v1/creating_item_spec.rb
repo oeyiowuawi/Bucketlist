@@ -7,13 +7,13 @@ RSpec.describe "when creating an item ", type: :request do
   context "using a valid request" do
     before(:each) do
       @item = build(:item)
-      token = token_generator(item.bucket_list.user)
+      token = token_generator(@item.bucket_list.user)
       headers = {
         "HTTP_AUTHORIZATION" => token,
         "Content-Type" => "application/json",
         "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
       }
-      post "/bucketlists/#{item.bucket_list.id}/items", {
+      post "/bucketlists/#{@item.bucket_list.id}/items", {
         name: @item.name,
         done: @item.done
       }.to_json, headers
@@ -24,6 +24,7 @@ RSpec.describe "when creating an item ", type: :request do
     end
 
     it "should return the name of the newly created item" do
+      binding.pry
       expect(json["name"]).to eq @item.name
     end
     it "should return the attribute done of the newly created item" do
@@ -34,13 +35,13 @@ RSpec.describe "when creating an item ", type: :request do
   context "using invalid request" do
     before(:each) do
       @item = build(:item)
-      token = token_generator(item.bucket_list.user)
+      token = token_generator(@item.bucket_list.user)
       headers = {
         "HTTP_AUTHORIZATION" => token,
         "Content-Type" => "application/json",
         "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
       }
-      post "/bucketlists/#{item.bucket_list.id}/items", {
+      post "/bucketlists/#{@item.bucket_list.id}/items", {
         name: nil,
         done: @item.done
       }.to_json, headers
