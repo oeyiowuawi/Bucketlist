@@ -56,7 +56,7 @@ RSpec.describe "when updating an item in a bucketlist",type: :request do
         "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
       }
       put "/bucketlists/2/items/#{@item.id}",
-      attributes_for(:item,name: nil, done: true).to_json, headers
+      attributes_for(:item,name: @item.name, done: true).to_json, headers
     end
       it "should return a 404 status code" do
         expect(response).to have_http_status 404
