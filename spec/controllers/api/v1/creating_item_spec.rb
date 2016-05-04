@@ -24,7 +24,6 @@ RSpec.describe "when creating an item ", type: :request do
     end
 
     it "should return the name of the newly created item" do
-      binding.pry
       expect(json["name"]).to eq @item.name
     end
     it "should return the attribute done of the newly created item" do
