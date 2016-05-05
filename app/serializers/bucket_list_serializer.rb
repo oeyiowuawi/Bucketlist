@@ -9,4 +9,5 @@ class BucketListSerializer < ActiveModel::Serializer
   def date_modified
     object.updated_at.strftime("%Y-%m-%d %l:%M:%S")
   end
+  
 end
