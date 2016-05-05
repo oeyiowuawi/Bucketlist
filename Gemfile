@@ -12,6 +12,7 @@ gem 'sqlite3'
 
 gem "bcrypt"
 gem "jwt"
+gem 'active_model_serializers'
 group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
