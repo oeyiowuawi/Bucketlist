@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :bucketlists do
-        resources :items, only: [:create, :update, :delete]
+        resources :items, only: [:create, :update, :destroy]
       end
 
     end
