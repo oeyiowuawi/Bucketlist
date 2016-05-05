@@ -21,10 +21,10 @@ RSpec.describe "when updating an item in a bucketlist",type: :request do
     end
 
     it "should return the updated name" do
-      expect(json["name"]).to eq "Alan Padew"
+      expect(json["item"]["name"]).to eq "Alan Padew"
     end
     it "should return the updated done" do
-      expect(json["done"]).to eq true
+      expect(json["item"]["done"]).to eq true
     end
   end
   context "invalid request" do

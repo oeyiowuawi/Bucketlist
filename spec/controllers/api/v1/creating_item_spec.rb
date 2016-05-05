@@ -24,10 +24,10 @@ RSpec.describe "when creating an item ", type: :request do
     end
 
     it "should return the name of the newly created item" do
-      expect(json["name"]).to eq @item.name
+      expect(json["item"]["name"]).to eq @item.name
     end
     it "should return the attribute done of the newly created item" do
-      expect(json["done"]).to eq false
+      expect(json["item"]["done"]).to eq false
     end
   end
 

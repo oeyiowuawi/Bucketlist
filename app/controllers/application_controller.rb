@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  include ActionController::Serialization
+  
   rescue_from Api::AuthenticationTimeoutError, with: :authentication_timeout
   rescue_from Api::NotAuthenticatedError, with: :user_not_authenticated
 

@@ -148,6 +148,8 @@
       "/Users/andela/Public/bucketlist/app/controllers/application_controller.rb": [
         1,
         1,
+        null,
+        1,
         1,
         null,
         1,
@@ -854,6 +856,20 @@
         null,
         null
       ],
+      "/Users/andela/Public/bucketlist/app/serializers/bucket_list_serializer.rb": [
+        1,
+        1,
+        1,
+        null,
+        1,
+        15,
+        null,
+        null,
+        1,
+        15,
+        null,
+        null
+      ],
       "/Users/andela/Public/bucketlist/app/controllers/api/v1/items_controller.rb": [
         1,
         1,
@@ -906,8 +922,22 @@
         5,
         null,
         null
+      ],
+      "/Users/andela/Public/bucketlist/app/serializers/item_serializer.rb": [
+        1,
+        1,
+        null,
+        null,
+        1,
+        6,
+        null,
+        null,
+        1,
+        6,
+        null,
+        null
       ]
     },
-    "timestamp": 1462448707
+    "timestamp": 1462454228
   }
 }
