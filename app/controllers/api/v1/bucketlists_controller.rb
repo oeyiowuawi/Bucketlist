@@ -5,7 +5,7 @@ class Api::V1::BucketlistsController < ApplicationController
     bucketlist_info = bucketlist_params.merge!({created_by: current_user.id})
     bucketlist = BucketList.new(bucketlist_info)
     if bucketlist.save
-      render json: bucketlist, status: 201
+      render json: bucketlist, status: 201, root: false
     else
       render json: {message: "Bucketlist couldn't be created",
                     error: bucketlist.errors}, status: 422
@@ -17,7 +17,7 @@ class Api::V1::BucketlistsController < ApplicationController
     if bucketlist.empty?
       render json: {message: "You have no bucketlist"}, status: 200
     else
-      render json: bucketlist, status: 200
+      render json: bucketlist, status: 200, root: false
     end
   end
 
@@ -34,7 +34,7 @@ class Api::V1::BucketlistsController < ApplicationController
     bucketlist = current_user.bucket_lists.find_by(id: bucketlist_params[:id])
     unless bucketlist.nil?
       if bucketlist.update_attributes(name: bucketlist_params[:name])
-        render json: bucketlist, status: 200
+        render json: bucketlist, status: 200, root: false
       else
         render json: {errors: bucketlist.errors}, status: 422
       end
