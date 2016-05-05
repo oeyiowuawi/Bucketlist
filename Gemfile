@@ -19,6 +19,8 @@ group :test, :development do
   gem 'database_cleaner'
   gem "shoulda-matchers"
   gem "faker"
+  gem "coveralls", require: false
+
 end
 
 
