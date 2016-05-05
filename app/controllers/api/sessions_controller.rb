@@ -3,7 +3,6 @@ class Api::SessionsController < ApplicationController
   def login
     user = User.find_by_credentials(auth_params)
     if user
-      session[:email] = auth_params[:email]
       render json: authentication_payload(user), status: 200
     else
       render json: {error: "Invalid username or password"}, status: :unauthorized

@@ -10,7 +10,7 @@ module Request
         password: user.password
       }
       json["auth_token"]
-    
+
     end
   end
 end
