@@ -22,7 +22,6 @@ RSpec.describe "when deleting an item ",type: :request do
     end
 
     it "should return the appropriate number of items" do
-      binding.pry
       bucketlist = @user.bucket_lists.find(@item1.bucket_list.id)
       expect(bucketlist.items.count).to eq 1
     end
