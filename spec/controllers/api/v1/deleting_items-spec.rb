@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe "when deleting an item ",type: :request do
   before(:all) do
-    @item1, @item2 = create_list(:item, 2)
+    bucketlist = create(:bucket_list)
+    @item1, @item2 = create_list(:item, 2, bucket_list: bucketlist)
   end
   context "in a bucketlist with valid parameters" do
     before(:each) do
@@ -21,7 +22,9 @@ RSpec.describe "when deleting an item ",type: :request do
     end
 
     it "should return the appropriate number of items" do
-      expect(@user.bucket_lists.items.count).to eq 1
+      binding.pry
+      bucketlist = @user.bucket_lists.find(@item1.bucket_list.id)
+      expect(bucketlist.items.count).to eq 1
     end
 
   end
