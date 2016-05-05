@@ -24,7 +24,7 @@ class Api::V1::BucketlistsController < ApplicationController
   def show
     bucketlist = current_user.bucket_lists.find_by(id: bucketlist_params[:id])
     unless bucketlist.nil?
-      render json: bucketlist, status: 200
+      render json: bucketlist, status: 200, root: false
     else
       render json: {message: "bucketlist not found"}, status: 404
     end
