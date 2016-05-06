@@ -5,7 +5,7 @@ FactoryGirl.define do
   end
 
   factory :invalid_bucketlist do
-    name ''
+    name ""
     user
   end
 end

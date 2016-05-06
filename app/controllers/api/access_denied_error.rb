@@ -1,2 +1,4 @@
-class Api::AccessDeniedError < StandardError
+module Api
+  class AccessDeniedError < StandardError
+  end
 end

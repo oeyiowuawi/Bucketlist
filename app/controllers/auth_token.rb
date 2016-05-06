@@ -4,8 +4,9 @@ class AuthToken
     JWT.encode(payload, Rails.application.secrets.secret_key_base)
   end
 
-  def self.decode(token, leeway = nil)
-    decoded = JWT.decode(token, Rails.application.secrets.secret_key_base, leeway: leeway)
+  def self.decode(token)
+    lway = { leeway: nil }
+    decoded = JWT.decode(token, Rails.application.secrets.secret_key_base, lway)
     HashWithIndifferentAccess.new(decoded[0])
   end
 end
