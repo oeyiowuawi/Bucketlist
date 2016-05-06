@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'when trying to update a bucketlist',type: :request do
+RSpec.describe 'when trying to update a bucketlist', type: :request do
   before(:all) do
     @user1 = create(:user)
     @user2 = create(:user)
@@ -13,9 +13,9 @@ RSpec.describe 'when trying to update a bucketlist',type: :request do
         before(:each) do
           token = token_generator(@user1)
           headers = {
-            "HTTP_AUTHORIZATION" => token,
-            "Content-Type" => "application/json",
-            "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+            'HTTP_AUTHORIZATION' => token,
+            'Content-Type' => 'application/json',
+            'HTTP_ACCEPT' => 'application/vnd.bucketlist.v1'
           }
           put "/bucketlists/#{@bucketlist1.id}", {
             name: 'Alan Padew'
@@ -33,9 +33,9 @@ RSpec.describe 'when trying to update a bucketlist',type: :request do
         before(:each) do
           token = token_generator(@user1)
           headers = {
-            "HTTP_AUTHORIZATION" => token,
-            "Content-Type" => "application/json",
-            "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+            'HTTP_AUTHORIZATION' => token,
+            'Content-Type' => 'application/json',
+            'HTTP_ACCEPT' => 'application/vnd.bucketlist.v1'
           }
           put "/bucketlists/#{@bucketlist1.id}", {
             name: nil
@@ -45,7 +45,6 @@ RSpec.describe 'when trying to update a bucketlist',type: :request do
           expect(response).to have_http_status 422
         end
         it 'return the appropriate error message to the user' do
-
           expect(json['errors']['name']).to eq ["can't be blank"]
         end
       end
@@ -55,18 +54,16 @@ RSpec.describe 'when trying to update a bucketlist',type: :request do
       before(:each) do
         token = token_generator(@user1)
         headers = {
-          "HTTP_AUTHORIZATION" => token,
-          "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          'HTTP_AUTHORIZATION' => token,
+          'Content-Type' => 'application/json',
+          'HTTP_ACCEPT' => 'application/vnd.bucketlist.v1'
         }
         put "/bucketlists/#{@bucketlist2.id}", {
           name: 'Alan Padew'
         }.to_json, headers
-
       end
 
       it 'returns a 404 status code' do
-
         expect(response).to have_http_status 404
       end
 

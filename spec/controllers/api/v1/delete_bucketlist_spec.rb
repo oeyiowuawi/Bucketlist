@@ -1,6 +1,6 @@
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "when trying to delete a bucketlist", type: :request do
+RSpec.describe 'when trying to delete a bucketlist', type: :request do
   before(:all) do
     @user1 = create(:user)
     @user2 = create(:user)
@@ -8,35 +8,30 @@ RSpec.describe "when trying to delete a bucketlist", type: :request do
     @bucketlist2 = create(:bucket_list, created_by: @user2.id)
   end
 
-    describe "as a logged In user" do
-
-      describe "that owns the  bucketlist" do
-      it "returns a status code of 204" do
+  describe 'as a logged In user' do
+    describe 'that owns the  bucketlist' do
+      it 'returns a status code of 204' do
         token = token_generator(@user1)
         headers = {
           'HTTP_AUTHORIZATION' => token,
-          "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          'Content-Type' => 'application/json',
+          'HTTP_ACCEPT' => 'application/vnd.bucketlist.v1'
         }
         delete "/bucketlists/#{@bucketlist1.id}", {}, headers
         expect(response).to have_http_status 204
       end
-
     end
     describe "that doesn't own the bucketlist " do
-
-      it "returns a status code of 404" do
+      it 'returns a status code of 404' do
         token = token_generator(@user1)
         headers = {
           'HTTP_AUTHORIZATION' => token,
-          "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-         }
+          'Content-Type' => 'application/json',
+          'HTTP_ACCEPT' => 'application/vnd.bucketlist.v1'
+        }
         delete "/bucketlists/#{@bucketlist2.id}", {}, headers
         expect(response).to have_http_status 404
       end
     end
-
-    end
-
+  end
 end

@@ -5,7 +5,6 @@ class BucketList < ActiveRecord::Base
   has_many :items
 
   def self.search(querry)
-    where("name LIKE ?", "%#{querry}%")
+    where('name LIKE ?', "%#{querry}%")
   end
-
 end
