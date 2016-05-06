@@ -3,16 +3,15 @@ class Api::SessionsController < ApplicationController
   def login
     user = User.find_by_credentials(auth_params)
     if user
-      session[:email] = auth_params[:email]
       render json: authentication_payload(user), status: 200
     else
-      render json: {error: "Invalid username or password"}, status: :unauthorized
+      render json: { error: 'Invalid username or password' }, status: :unauthorized
     end
   end
 
   def destroy
     current_user.update_attribute('active_status', false)
-    render json: {message: "You have been logged out"}, status: 200
+    render json: { message: 'You have been logged out' }, status: 200
   end
 
   private
@@ -22,6 +21,6 @@ class Api::SessionsController < ApplicationController
   end
 
   def authentication_payload(user)
-    {auth_token: AuthToken.encode({user_id: user.id})}
+    { auth_token: AuthToken.encode(user_id: user.id) }
   end
 end

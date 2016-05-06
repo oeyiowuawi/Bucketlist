@@ -3,19 +3,19 @@ class Api::V1::ItemsController < ApplicationController
   before_action :validate_bucketlist_and_item
   include InvalidRequest
   def create
-      item = @bucketlist.items.new(items_params.except(:bucketlist_id))
-      if item.save
-        render json: item, status: 201
-      else
-        render json: {errors: item.errors}, status: 422
-      end
+    item = @bucketlist.items.new(items_params.except(:bucketlist_id))
+    if item.save
+      render json: item, status: 201
+    else
+      render json: { errors: item.errors }, status: 422
+    end
   end
 
   def update
     if @item.update(items_params.except(:bucketlist_id))
       render json: @item, status: 200
     else
-      render json: {errors: @item.errors}, status: 422
+      render json: { errors: @item.errors }, status: 422
     end
   end
 
@@ -39,5 +39,4 @@ class Api::V1::ItemsController < ApplicationController
       return not_found if @item.nil?
     end
   end
-
 end

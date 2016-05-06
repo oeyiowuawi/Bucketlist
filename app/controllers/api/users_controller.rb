@@ -5,11 +5,12 @@ class Api::UsersController < ApplicationController
 
       render json: user, status: 201, location: api_users_path(user)
     else
-      render json: {errors: user.errors}, status: 422
+      render json: { errors: user.errors }, status: 422
     end
   end
 
   private
+
   def users_params
     params.permit(:name, :email, :password, :password_confirmation)
   end
