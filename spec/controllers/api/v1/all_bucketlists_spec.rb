@@ -95,19 +95,17 @@ RSpec.describe "list all the bucketlists", type: :request do
 
     context "when requesting with only page parameter" do
       before(:each) do
-
         get "/bucketlists?page=2", {}, @headers
       end
 
       it "should return just 10 bucketlists" do
-        binding.pry
         expect(json.count).to eq 10
       end
       it "should return a status code of 200" do
         expect(response).to have_http_status 200
       end
       it "should return the correct bucketlist" do
-        names = json.map {|hsh| hsh["name"] }
+        names = json.map { |hsh| hsh["name"] }
         a = 0
         b = 20
         10.times do
@@ -144,7 +142,7 @@ RSpec.describe "list all the bucketlists", type: :request do
         expect(json.count).to eq 5
       end
       it "returns the right bucketlists" do
-        names = json.map {|hsh| hsh["name"] }
+        names = json.map { |hsh| hsh["name"] }
         a = 0
         b = 5
         5.times do
@@ -155,6 +153,4 @@ RSpec.describe "list all the bucketlists", type: :request do
       end
     end
   end
-
-
 end
