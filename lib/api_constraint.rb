@@ -5,6 +5,7 @@ class ApiConstraints
   end
 
   def matches?(request)
-    @default ||= request.headers['Accept'].include? "application/vnd.BucketList.v#{@version}"
+    @default ||= request.headers["Accept"].
+                 include? "application/vnd.BucketList.v#{@version}"
   end
 end

@@ -18,7 +18,8 @@ class ApplicationController < ActionController::API
   private
 
   def check_logged_in
-    render json: { mesage: 'You must be logged in to access this resource ' }, status: 419 unless @current_user.active_status
+    render json: { mesage: "You must be logged in to access this resource " },
+           status: 419 unless @current_user.active_status
   end
 
   def user_id_included_in_auth_token?
@@ -30,20 +31,21 @@ class ApplicationController < ActionController::API
   end
 
   def http_auth_token
-    @http_auth_token ||= if request.headers['Authorization'].present?
-                           request.headers['Authorization'].split(' ').last
+    @http_auth_token ||= if request.headers["Authorization"].present?
+                           request.headers["Authorization"].split(" ").last
                          end
   end
 
   def authentication_timeout
-    render json: { errors: 'Authentication Timeout' }, status: 419
+    render json: { errors: "Authentication Timeout" }, status: 419
   end
 
   def forbidden_resource
-    render json: { errors: ['Not Authorized To Access Resource'] }, status: :forbidden
+    render json: { errors: ["Not Authorized To Access Resource"] },
+           status: :forbidden
   end
 
   def user_not_authenticated
-    render json: { errors: 'Not Authenticated' }, status: :unauthorized
+    render json: { errors: "Not Authenticated" }, status: :unauthorized
   end
 end

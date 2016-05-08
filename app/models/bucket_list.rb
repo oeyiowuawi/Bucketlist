@@ -3,8 +3,9 @@ class BucketList < ActiveRecord::Base
   validates :name, presence: true
   validates :created_by, presence: true
   has_many :items
+  extend Paginate
 
   def self.search(querry)
-    where('name LIKE ?', "%#{querry}%")
+    where("name LIKE ?", "%#{querry}%")
   end
 end

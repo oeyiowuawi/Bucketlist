@@ -1,2 +1,4 @@
-class Api::NotAuthenticatedError < StandardError
+module Api
+  class NotAuthenticatedError < StandardError
+  end
 end

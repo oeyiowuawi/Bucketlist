@@ -5,13 +5,14 @@ class User < ActiveRecord::Base
   before_save { self.email = email.downcase }
   validates :name, presence: true, length: { minimum: 2 }
   validates :password, presence: true, length: { minimum: 7 }
-  validates :email, presence: true, format: { with: VALID_EMAIL }, uniqueness: { case_sensitive: true }
+  validates :email, presence: true, format: { with: VALID_EMAIL },
+                    uniqueness: { case_sensitive: true }
   has_secure_password
 
   def self.find_by_credentials(auth_params)
     user = find_by(email: auth_params[:email])
     if user && user.authenticate(auth_params[:password])
-      user.update_attribute('active_status', true)
+      user.update_attribute("active_status", true)
       user
     end
   end

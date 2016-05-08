@@ -1,2 +1,4 @@
-class Api::AuthenticationTimeoutError < StandardError
+module Api
+  class AuthenticationTimeoutError < StandardError
+  end
 end
