@@ -9,7 +9,7 @@ RSpec.shared_examples "require log in before actions" do
     post "/bucketlists", { name: nil }.to_json, headers
   end
   it "should return errors for non-logged-in user" do
-    expect(json["errors"]).to eq "Not Authenticated"
+    expect(json["errors"]).to include "Not Authenticated"
   end
   it "should return a unauthorized status code" do
     expect(response).to have_http_status 401
