@@ -36,8 +36,79 @@ RSpec.describe "list all the bucketlists", type: :request do
     it_behaves_like "require log in before actions"
   end
 
+  describe "Pagination" do
+    before(:all) do
+      @bucketlist = create_list(:bucket_list, 30, created_by: @user.id)
+      @headers = {
+        "HTTP_AUTHORIZATION" => @token,
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
+    end
+
+    context "when requesting with only page parameter" do
+      before(:each) do
+        get "/bucketlists?page=2", {}, @headers
+      end
+
+      it "should return just 10 bucketlists" do
+        expect(json.count).to eq 10
+      end
+      it "should return a status code of 200" do
+        expect(response).to have_http_status 200
+      end
+      it "should return the correct bucketlist" do
+        names = json.map { |hsh| hsh["name"] }
+        a = 0
+        b = 20
+        10.times do
+          expect(names[a]).to eq @bucketlist[b]["name"]
+          a += 1
+          b += 1
+        end
+      end
+    end
+
+    context "when requesting with only limit" do
+      before(:each) do
+        get "/bucketlists?limit=5", {}, @headers
+      end
+
+      it "returns a status code of 200" do
+        expect(response).to have_http_status 200
+      end
+
+      it "returns the number of results based on the provided limit" do
+        expect(json.count).to eq 5
+      end
+    end
+
+    context "when requesting with limit and page number" do
+      before(:each) do
+        get "/bucketlists?page=2&limit=5", {}, @headers
+      end
+
+      it "returns a status code of 200" do
+        expect(response).to have_http_status 200
+      end
+      it "returns the right number of bucketlist" do
+        expect(json.count).to eq 5
+      end
+      it "returns the right bucketlists" do
+        names = json.map { |hsh| hsh["name"] }
+        a = 0
+        b = 5
+        5.times do
+          expect(names[a]).to eq @bucketlist[b]["name"]
+          a += 1
+          b += 1
+        end
+      end
+    end
+  end
+
   describe "Search" do
-    before(:each) do
+    before(:all) do
       create(:bucket_list, name: "Late Thirties", user: @user)
       create(:bucket_list, name: "Early Thirties", user: @user)
       create(:bucket_list, name: "Mid Twenties", user: @user)
@@ -79,77 +150,6 @@ RSpec.describe "list all the bucketlists", type: :request do
       end
       it "returns the correct number of bucketlists" do
         expect(json["errors"]).to include "No result found"
-      end
-    end
-  end
-
-  describe "Pagination" do
-    before(:all) do
-      @bucketlist = create_list(:bucket_list, 30, created_by: @user.id)
-      @headers = {
-        "HTTP_AUTHORIZATION" => @token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-    end
-
-    context "when requesting with only page parameter" do
-      before(:each) do
-        get "/bucketlists?page=2", {}, @headers
-      end
-
-      it "should return just 10 bucketlists" do
-        expect(json.count).to eq 10
-      end
-      it "should return a status code of 200" do
-        expect(response).to have_http_status 200
-      end
-      it "should return the correct bucketlist" do
-        names = json.map { |hsh| hsh["name"] }
-        a = 0
-        b = 20
-        10.times do
-          expect(names[a]).to eq @bucketlist[b]
-          a += 1
-          b += 1
-        end
-      end
-    end
-
-    context "when requesting with only limit" do
-      before(:each) do
-        get "/bucketlists?limit=5", {}, @headers
-      end
-
-      it "returns a status code of 200" do
-        expect(response).to have_http_status 200
-      end
-
-      it "returns the number of results based on the provided limit" do
-        expect(json.count).to eq 5
-      end
-    end
-
-    context "when requesting with limit and page number" do
-      before(:each) do
-        get "/bucketlists?page=2&limit=5", {}, @headers
-      end
-
-      it "returns a status code of 200" do
-        expect(response).to have_http_status 200
-      end
-      it "returns the right number of bucketlist" do
-        expect(json.count).to eq 5
-      end
-      it "returns the right bucketlists" do
-        names = json.map { |hsh| hsh["name"] }
-        a = 0
-        b = 5
-        5.times do
-          expect(names[a]).to eq @bucketlist[b]
-          a += 1
-          b += 1
-        end
       end
     end
   end

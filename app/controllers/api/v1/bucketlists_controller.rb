@@ -18,10 +18,11 @@ module Api
       end
 
       def index
-        if @bucketlist.empty?
+        if @bucketlists.empty?
           render json: { errors: "No result found" }, status: 404
         else
-          render json: @bucketlist, status: 200, root: false
+          render json: @bucketlists.generate_paginate(params), status: 200,
+                 root: false
         end
       end
 
@@ -59,7 +60,7 @@ module Api
         if bucketlist.empty?
           render json: { message: "You have no bucketlist" }, status: 200
         else
-          @bucketlist = q ? current_user.bucket_lists.search(q) : bucketlist
+          @bucketlists = q ? current_user.bucket_lists.search(q) : bucketlist
         end
       end
     end
