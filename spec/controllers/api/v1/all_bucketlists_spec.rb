@@ -6,6 +6,23 @@ RSpec.describe "list all the bucketlists", type: :request do
     @token = token_generator(@user)
   end
 
+  context "when the user has no bucketlist" do
+    before(:each) do
+      headers = {
+        "HTTP_AUTHORIZATION" => @token,
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
+      get "/bucketlists", {}, headers
+    end
+    it "returns a status code of 200" do
+      expect(response).to have_http_status 200
+    end
+    it "returns a message for the user " do
+      expect(json["message"]).to eq "You have no bucketlist"
+    end
+  end
+
   context "with valid request" do
     before(:each) do
       create_list(:bucket_list, 3, created_by: @user.id)
