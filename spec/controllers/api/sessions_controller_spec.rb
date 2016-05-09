@@ -55,6 +55,30 @@ RSpec.describe Api::SessionsController, type: :request do
     end
   end
 
+  describe "Non-logged in user with valid token" do
+
+    before(:all) do
+      token = token_generator(@user)
+      headers = {
+        "HTTP_AUTHORIZATION" => token,
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
+      get "/auth/logout", {}, headers
+
+      get "/bucketlists", {}, "HTTP_AUTHORIZATION" => token,
+      "Content-Type" => "application/json",
+      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+    end
+    
+    it " returns a status code of 401" do
+      expect(response).to have_http_status 401
+    end
+    it " returns an error message " do
+      expect(json["error"]).to include "You must be logged in"
+    end
+  end
+
   describe "Expired Token" do
     before(:all) do
       user = create(:user, active_status: true)

@@ -51,7 +51,8 @@ RSpec.describe "list all the bucketlists", type: :request do
   end
 
   context "invalid request" do
-    it_behaves_like "require log in before actions"
+    # it_behaves_like "require log in before actions"
+    include_examples "require log in before actions"
   end
 
   describe "Pagination" do
