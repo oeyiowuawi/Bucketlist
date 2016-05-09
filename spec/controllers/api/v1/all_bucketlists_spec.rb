@@ -26,6 +26,7 @@ RSpec.describe "list all the bucketlists", type: :request do
   context "with valid request" do
     before(:each) do
       create_list(:bucket_list, 3, created_by: @user.id)
+      create(:bucket_list)
       headers = {
         "HTTP_AUTHORIZATION" => @token,
         "Content-Type" => "application/json",
