@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe BucketList, type: :model do
   subject { build(:bucket_list) }
