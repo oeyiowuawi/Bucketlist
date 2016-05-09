@@ -8,6 +8,7 @@ RSpec.describe "User", type: :model do
   it { is_expected.to validate_uniqueness_of(:email) }
   it { is_expected.to validate_length_of(:password).is_at_least(7) }
   it { is_expected.to have_secure_password }
+  it { is_expected.to have_many(:bucket_lists).with_foreign_key(:created_by) }
 
   describe "create User" do
     context "with valid User attributes" do
@@ -29,9 +30,8 @@ RSpec.describe "User", type: :model do
   describe ".find_by_credentials" do
     let(:auth_params) { { email: subject.email, password: subject.password } }
     it "returns user if correct credentials are supplied" do
-      subject.active_status = true
       subject.save
-      expect(User.find_by_credentials(auth_params)).to eq subject
+      expect(User.find_by_credentials(auth_params).name).to eq subject.name
     end
     it "returns nil if invalid credentials are supplied" do
       subject.email = "ikem.okonkwo@andela.com"
