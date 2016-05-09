@@ -6,12 +6,11 @@ gem "rails-api"
 
 gem "spring", group: :development
 
-gem "sqlite3"
-
 gem "bcrypt"
 gem "jwt"
 gem "active_model_serializers"
 group :test, :development do
+  gem "sqlite3"
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem "pry-rails"
@@ -19,6 +18,11 @@ group :test, :development do
   gem "shoulda-matchers"
   gem "faker"
   gem "coveralls", require: false
+end
+
+group :production do
+  gem "rails_12factor"
+  gem "pg"
 end
 
 # To use ActiveModel has_secure_password
