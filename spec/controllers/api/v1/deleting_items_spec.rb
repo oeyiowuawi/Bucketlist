@@ -6,7 +6,7 @@ RSpec.describe "when deleting an item ", type: :request do
     @item1, @item2 = create_list(:item, 2, bucket_list: bucketlist)
   end
   context "in a bucketlist with valid parameters" do
-    before(:each) do
+    before(:all) do
       @user = @item1.bucket_list.user
       token = token_generator(@user)
       headers = {
@@ -29,7 +29,7 @@ RSpec.describe "when deleting an item ", type: :request do
   end
 
   context "in a bucketlist with invalid item id " do
-    before(:each) do
+    before(:all) do
       @user = @item1.bucket_list.user
       token = token_generator(@user)
       headers = {
@@ -50,7 +50,7 @@ RSpec.describe "when deleting an item ", type: :request do
   end
 
   context "in a bucketlist that do not belong to user " do
-    before(:each) do
+    before(:all) do
       @user = @item2.bucket_list.user
       token = token_generator(@user)
       headers = {

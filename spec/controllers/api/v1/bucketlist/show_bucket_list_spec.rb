@@ -1,15 +1,15 @@
 require "rails_helper"
 
-RSpec.describe "getting a particular bucketlist", type: :request do
+RSpec.describe "Showing Bucketlist", type: :request do
   before(:all) do
     @user1 = create(:user)
     @user2 = create(:user)
     @bucketlist1 = create(:bucket_list, created_by: @user1.id)
     @bucketlist2 = create(:bucket_list, created_by: @user2.id)
   end
-  context ",when logged in," do
-    describe "that belongs to the correct user" do
-      before(:each) do
+  describe "when logged in," do
+    context "Bucketlists that belongs to the correct user" do
+      before(:all) do
         token = token_generator(@user1)
         headers = {
           "HTTP_AUTHORIZATION" => token,
@@ -23,13 +23,13 @@ RSpec.describe "getting a particular bucketlist", type: :request do
         expect(response).to have_http_status 200
       end
 
-      it "should return only bucketlist that belogs to the current user" do
+      it "should return only bucketlist that belongs to the current user" do
         expect(json["name"]).to eq @bucketlist1.name
       end
     end
 
-    describe "that doesn't belong to a user" do
-      before(:each) do
+    context "Bucketlist that doesn't belong to a user" do
+      before(:all) do
         token = token_generator(@user1)
         headers = {
           "HTTP_AUTHORIZATION" => token,
