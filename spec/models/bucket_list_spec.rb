@@ -2,12 +2,14 @@ require "rails_helper"
 
 RSpec.describe BucketList, type: :model do
   subject { build(:bucket_list) }
-  it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to have_many(:items) }
-  it { is_expected.to have_many(:items) }
-  it { is_expected.to belong_to(:user).with_foreign_key(:created_by) }
 
-  it { is_expected.to validate_presence_of(:created_by) }
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to have_many(:items) }
+    it { is_expected.to have_many(:items) }
+    it { is_expected.to belong_to(:user).with_foreign_key(:created_by) }
+    it { is_expected.to validate_presence_of(:created_by) }
+  end
 
   describe ".search" do
     before(:all) do
