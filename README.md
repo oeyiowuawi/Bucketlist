@@ -1,4 +1,4 @@
-## Introduction [![Coverage Status](https://coveralls.io/repos/github/andela-oeyiowuawi/Bucketlist/badge.svg?branch=master)](https://coveralls.io/github/andela-oeyiowuawi/Bucketlist?branch=master) [![Circle CI](https://circleci.com/gh/andela-oeyiowuawi/Bucketlist.svg?style=svg)](https://circleci.com/gh/andela-oeyiowuawi/Bucketlist)
+## Introduction [![Coverage Status](https://coveralls.io/repos/github/andela-oeyiowuawi/Bucketlist/badge.svg?branch=master)](https://coveralls.io/github/andela-oeyiowuawi/Bucketlist?branch=master) [![Circle CI](https://circleci.com/gh/andela-oeyiowuawi/Bucketlist.svg?style=svg)](https://circleci.com/gh/andela-oeyiowuawi/Bucketlist) [![Code Climate](https://codeclimate.com/github/andela-oeyiowuawi/Bucketlist/badges/gpa.svg)](https://codeclimate.com/github/andela-oeyiowuawi/Bucketlist)
 Got a list of Things you would want to do before you reach a certain point in your life? I bet you do. e-list is here to solve your problem. e-list is a bucketlist Api that allows you document this Todos. e-list also gives your the ability to add items to your bucketlists.
 ​
 
