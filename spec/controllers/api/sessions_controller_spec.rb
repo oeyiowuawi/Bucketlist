@@ -5,46 +5,54 @@ RSpec.describe Api::SessionsController, type: :request do
     @user = create(:user)
   end
   describe "when user tries to login" do
-    let(:invalid_password) { "1234567" }
+    context "with valid credential" do
+      before(:all) do
+        header = {
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
+        post "/auth/login", {
+          email: @user.email,
+          password: @user.password }.to_json, header
+      end
 
-    it "with valid credential" do
-      header = {
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      post "/auth/login", {
-        email: @user.email,
-        password: @user.password }.to_json, header
-      expect(response).to have_http_status 200
-      expect(json["auth_token"]).to be_truthy
+      it "returns a status code of 200" do
+        expect(response).to have_http_status 200
+      end
+
+      it "returns a token" do
+        expect(json["auth_token"]).to be_truthy
+      end
     end
 
-    it "with invalid credential" do
-      header = {
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      post "/auth/login", {
-        email: @user.email,
-        password: invalid_password }.to_json, header
+    context "with invalid credential" do
+      before(:all) do
+        invalid_password = "1234567"
 
-      expect(response).to have_http_status :unauthorized
-      expect(json["error"]).to eq "Invalid username or password"
+        header = {
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
+        post "/auth/login", {
+          email: @user.email,
+          password: invalid_password }.to_json, header
+      end
+      it "returns a 401 status code" do
+        expect(response).to have_http_status :unauthorized
+      end
+      it "returns ivalid username or password error" do
+        expect(json["error"]).to eq "Invalid username or password"
+      end
     end
   end
 
   describe "log out" do
     it "allows logged in users to log out" do
-      headers = {
-        "HTTP_AUTHORIZATION" => token_generator(@user),
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      get "/auth/logout", {}, headers
+      valid_get_request("/auth/logout", @user)
       expect(response).to have_http_status 200
       expect(json["message"]).to eq "You have been logged out"
     end
-    it "tells non-logged in users to login first" do
+    it "throws error for non-logged in users to login first" do
       headers = {
         "Content-Type" => "application/json",
         "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"

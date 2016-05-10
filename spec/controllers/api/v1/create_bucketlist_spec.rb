@@ -9,7 +9,6 @@ RSpec.describe Api::V1::BucketlistsController, type: :request do
 
   context "creating a bucketlist with invalid request and params" do
     before(:each) do
-      # user.save
       @token = token_generator(@user)
       headers = {
         "HTTP_AUTHORIZATION" => @token,
