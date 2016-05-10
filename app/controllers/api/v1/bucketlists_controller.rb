@@ -3,8 +3,8 @@ module Api
     class BucketlistsController < ApplicationController
       before_action :authenticate
       before_action :search_bucketlist, only: :index
-      before_action :validate_bucketlist, only: [:show, :update, :destroy]
       include InvalidRequest
+      skip_before_action :validate_bucketlist, only: [:create, :index]
 
       def create
         bucketlist_info = bucketlist_params.merge!(created_by: current_user.id)
@@ -47,11 +47,6 @@ module Api
 
       def bucketlist_params
         params.permit(:name, :id, :page, :limit)
-      end
-
-      def validate_bucketlist
-        @bucketlist = current_user.bucket_lists.find_by(id: params[:id])
-        return not_found if @bucketlist.nil?
       end
 
       def search_bucketlist

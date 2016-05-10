@@ -2,8 +2,9 @@ module Api
   module V1
     class ItemsController < ApplicationController
       before_action :authenticate
-      before_action :validate_bucketlist_and_item
       include InvalidRequest
+      skip_before_action :validate_bucketlist_item, only: :create
+
       def create
         item = @bucketlist.items.new(items_params.except(:bucketlist_id))
         if item.save
@@ -30,17 +31,6 @@ module Api
 
       def items_params
         params.permit(:bucketlist_id, :name, :done, :id)
-      end
-
-      def validate_bucketlist_and_item
-        id = { id: params[:bucketlist_id] }
-        @bucketlist = current_user.bucket_lists.find_by(id)
-        return not_found if @bucketlist.nil?
-
-        if items_params[:id]
-          @item = @bucketlist.items.find_by(id: items_params[:id])
-          return not_found if @item.nil?
-        end
       end
     end
   end
