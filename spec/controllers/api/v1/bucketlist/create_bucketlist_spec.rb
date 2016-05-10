@@ -2,22 +2,22 @@ require "rails_helper"
 
 RSpec.describe Api::V1::BucketlistsController, type: :request do
   before(:all) do
-    @user = create(:user)
+    @user = create(:user, active_status: true)
+    token = token_generator(@user)
+    @headers = {
+      "HTTP_AUTHORIZATION" => token,
+      "Content-Type" => "application/json",
+      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+    }
   end
 
   it_behaves_like "require log in before actions"
 
   context "creating a bucketlist with invalid request and params" do
-    before(:each) do
-      @token = token_generator(@user)
-      headers = {
-        "HTTP_AUTHORIZATION" => @token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
+    before(:all) do
       post "/bucketlists",
            { name: nil }.to_json,
-           headers
+           @headers
     end
 
     it "should include name 'is blank' error" do
@@ -29,16 +29,11 @@ RSpec.describe Api::V1::BucketlistsController, type: :request do
   end
 
   context "creating a bucketlist with valid request and params" do
-    before(:each) do
+    before(:all) do
       @bucketlist = build(:bucket_list)
-      headers = {
-        "HTTP_AUTHORIZATION" => token_generator(@user),
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
       post "/bucketlists",
            { name: @bucketlist.name }.to_json,
-           headers
+           @headers
     end
 
     it "should return a status of 201" do

@@ -48,7 +48,16 @@ RSpec.describe Api::SessionsController, type: :request do
 
   describe "log out" do
     it "allows logged in users to log out" do
-      valid_get_request("/auth/logout", @user)
+      user = @user
+      user.update_attribute("active_status", true)
+      headers = {
+        "HTTP_AUTHORIZATION" => token_generator(user),
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
+
+      get "/auth/logout", {}, headers
+
       expect(response).to have_http_status 200
       expect(json["message"]).to eq "You have been logged out"
     end

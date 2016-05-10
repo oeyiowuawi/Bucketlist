@@ -4,18 +4,19 @@ RSpec.describe "when deleting an item ", type: :request do
   before(:all) do
     bucketlist = create(:bucket_list)
     @item1, @item2 = create_list(:item, 2, bucket_list: bucketlist)
+    @user = @item1.bucket_list.user
+    @user.update_attribute("active_status", true)
+    token = token_generator(@user)
+    @headers = {
+      "HTTP_AUTHORIZATION" => token,
+      "Content-Type" => "application/json",
+      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+    }
   end
   context "in a bucketlist with valid parameters" do
-    before(:all) do
-      @user = @item1.bucket_list.user
-      token = token_generator(@user)
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
+    before(:each) do
       delete "/bucketlists/#{@item1.bucket_list.id}/items/#{@item1.id}", {},
-             headers
+             @headers
     end
 
     it "should return a 204 status" do
@@ -29,15 +30,8 @@ RSpec.describe "when deleting an item ", type: :request do
   end
 
   context "in a bucketlist with invalid item id " do
-    before(:all) do
-      @user = @item1.bucket_list.user
-      token = token_generator(@user)
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      delete "/bucketlists/#{@item1.bucket_list.id}/items/3", {}, headers
+    before(:each) do
+      delete "/bucketlists/#{@item1.bucket_list.id}/items/3", {}, @headers
     end
 
     it "should return a status code of 404" do
@@ -50,15 +44,8 @@ RSpec.describe "when deleting an item ", type: :request do
   end
 
   context "in a bucketlist that do not belong to user " do
-    before(:all) do
-      @user = @item2.bucket_list.user
-      token = token_generator(@user)
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      delete "/bucketlists/2/items/#{@item2.id}", {}.to_json, headers
+    before(:each) do
+      delete "/bucketlists/2/items/#{@item2.id}", {}.to_json, @headers
     end
 
     it "should return a status code of 404" do

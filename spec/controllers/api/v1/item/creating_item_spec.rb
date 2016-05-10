@@ -2,20 +2,22 @@ require "rails_helper"
 
 RSpec.describe "when creating an item ", type: :request do
   before(:all) do
+    @item = build(:item)
+    user = @item.bucket_list.user
+    user.update_attribute("active_status", true)
+    token = token_generator(user)
+    @headers = {
+      "HTTP_AUTHORIZATION" => token,
+      "Content-Type" => "application/json",
+      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+    }
   end
   context "using a valid request" do
     before(:each) do
-      @item = build(:item)
-      token = token_generator(@item.bucket_list.user)
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
       post "/bucketlists/#{@item.bucket_list.id}/items", {
         name: @item.name,
         done: @item.done
-      }.to_json, headers
+      }.to_json, @headers
     end
 
     it "should return a status code of 201" do
@@ -31,18 +33,11 @@ RSpec.describe "when creating an item ", type: :request do
   end
 
   context "using invalid request" do
-    before(:each) do
-      @item = build(:item)
-      token = token_generator(@item.bucket_list.user)
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
+    before(:all) do
       post "/bucketlists/#{@item.bucket_list.id}/items", {
         name: nil,
         done: @item.done
-      }.to_json, headers
+      }.to_json, @headers
     end
     it "should return  status a 422" do
       expect(response).to have_http_status 422

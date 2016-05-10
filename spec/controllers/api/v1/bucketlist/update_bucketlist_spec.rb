@@ -1,25 +1,25 @@
 require "rails_helper"
 RSpec.describe "when trying to update a bucketlist", type: :request do
   before(:all) do
-    @user1 = create(:user)
+    @user1 = create(:user, active_status: true)
     @user2 = create(:user)
     @bucketlist1 = create(:bucket_list, created_by: @user1.id)
     @bucketlist2 = create(:bucket_list, created_by: @user2.id)
+    token = token_generator(@user1)
+    @headers = {
+      "HTTP_AUTHORIZATION" => token,
+      "Content-Type" => "application/json",
+      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+    }
   end
 
   context "as a logged in user" do
     context "that owns the bucketlist" do
       context "Request with valid parameters" do
-        before(:each) do
-          token = token_generator(@user1)
-          headers = {
-            "HTTP_AUTHORIZATION" => token,
-            "Content-Type" => "application/json",
-            "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-          }
+        before(:all) do
           put "/bucketlists/#{@bucketlist1.id}", {
             name: "Alan Padew"
-          }.to_json, headers
+          }.to_json, @headers
         end
         it "returns a success status code" do
           expect(response).to have_http_status 200
@@ -30,16 +30,10 @@ RSpec.describe "when trying to update a bucketlist", type: :request do
         end
       end
       context "Request with invalid Parameter" do
-        before(:each) do
-          token = token_generator(@user1)
-          headers = {
-            "HTTP_AUTHORIZATION" => token,
-            "Content-Type" => "application/json",
-            "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-          }
+        before(:all) do
           put "/bucketlists/#{@bucketlist1.id}", {
             name: nil
-          }.to_json, headers
+          }.to_json, @headers
         end
         it "returns a status code of 422" do
           expect(response).to have_http_status 422
@@ -51,16 +45,10 @@ RSpec.describe "when trying to update a bucketlist", type: :request do
     end
 
     context "that doesn't belong to the user," do
-      before(:each) do
-        token = token_generator(@user1)
-        headers = {
-          "HTTP_AUTHORIZATION" => token,
-          "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-        }
+      before(:all) do
         put "/bucketlists/#{@bucketlist2.id}", {
           name: "Alan Padew"
-        }.to_json, headers
+        }.to_json, @headers
       end
 
       it "returns a 404 status code" do
