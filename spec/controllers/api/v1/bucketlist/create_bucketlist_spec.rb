@@ -11,7 +11,7 @@ RSpec.describe Api::V1::BucketlistsController, type: :request do
     }
   end
 
-  it_behaves_like "require log in before actions"
+  
 
   context "creating a bucketlist with invalid request and params" do
     before(:all) do

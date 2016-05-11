@@ -46,7 +46,21 @@ RSpec.describe "list all the bucketlists", type: :request do
   end
 
   context "invalid request" do
-    include_examples "require log in before actions"
+    before(:each) do
+      headers = {
+        "HTTP_AUTHORIZATION" => nil,
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
+
+      post "/bucketlists", { name: nil }.to_json, headers
+    end
+    it "should return errors for non-logged-in user" do
+      expect(json["errors"]).to include "Not Authenticated"
+    end
+    it "should return a unauthorized status code" do
+      expect(response).to have_http_status 401
+    end
   end
 
   describe "Pagination" do
