@@ -15,6 +15,11 @@ class ApplicationController < ActionController::API
     raise NotAuthenticatedError
   end
 
+  def invalid_endpoint
+    render json: { error: "Invalid Endpoint. Read The Api doc and try again" },
+           status: 404
+  end
+
   private
 
   def check_logged_in
