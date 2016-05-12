@@ -11,4 +11,5 @@ Rails.application.routes.draw do
       end
     end
   end
+  match "*invalid_endpoint", to: "application#invalid_endpoint", via: :all
 end

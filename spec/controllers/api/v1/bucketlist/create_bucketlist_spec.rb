@@ -11,8 +11,6 @@ RSpec.describe Api::V1::BucketlistsController, type: :request do
     }
   end
 
-  
-
   context "creating a bucketlist with invalid request and params" do
     before(:all) do
       post "/bucketlists",
