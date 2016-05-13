@@ -2,18 +2,18 @@ require "rails_helper"
 
 RSpec.describe "list all the bucketlists", type: :request do
   before(:all) do
-    @user = create(:user)
-    @token = token_generator(@user)
+    @user = create(:user, active_status: true)
+    token = token_generator(@user)
+    @headers = {
+      "HTTP_AUTHORIZATION" => token,
+      "Content-Type" => "application/json",
+      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+    }
   end
 
   context "when the user has no bucketlist" do
-    before(:each) do
-      headers = {
-        "HTTP_AUTHORIZATION" => @token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      get "/bucketlists", {}, headers
+    before(:all) do
+      get "/bucketlists", {}, @headers
     end
     it "returns a status code of 200" do
       expect(response).to have_http_status 200
@@ -26,12 +26,8 @@ RSpec.describe "list all the bucketlists", type: :request do
   context "with valid request" do
     before(:each) do
       create_list(:bucket_list, 3, created_by: @user.id)
-      headers = {
-        "HTTP_AUTHORIZATION" => @token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      get "/bucketlists", {}, headers
+      create(:bucket_list)
+      get "/bucketlists", {}, @headers
     end
 
     it "should return a 200 status code" do
@@ -50,21 +46,30 @@ RSpec.describe "list all the bucketlists", type: :request do
   end
 
   context "invalid request" do
-    it_behaves_like "require log in before actions"
+    before(:each) do
+      headers = {
+        "HTTP_AUTHORIZATION" => nil,
+        "Content-Type" => "application/json",
+        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      }
+
+      post "/bucketlists", { name: nil }.to_json, headers
+    end
+    it "should return errors for non-logged-in user" do
+      expect(json["errors"]).to include "Not Authenticated"
+    end
+    it "should return a unauthorized status code" do
+      expect(response).to have_http_status 401
+    end
   end
 
   describe "Pagination" do
     before(:all) do
       @bucketlist = create_list(:bucket_list, 30, created_by: @user.id)
-      @headers = {
-        "HTTP_AUTHORIZATION" => @token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
     end
 
     context "when requesting with only page parameter" do
-      before(:each) do
+      before(:all) do
         get "/bucketlists?page=2", {}, @headers
       end
 
@@ -87,7 +92,7 @@ RSpec.describe "list all the bucketlists", type: :request do
     end
 
     context "when requesting with only limit" do
-      before(:each) do
+      before(:all) do
         get "/bucketlists?limit=5", {}, @headers
       end
 
@@ -101,7 +106,7 @@ RSpec.describe "list all the bucketlists", type: :request do
     end
 
     context "when requesting with limit and page number" do
-      before(:each) do
+      before(:all) do
         get "/bucketlists?page=2&limit=5", {}, @headers
       end
 
@@ -133,12 +138,7 @@ RSpec.describe "list all the bucketlists", type: :request do
 
     context "with valid search querry" do
       before(:all) do
-        headers = {
-          "HTTP_AUTHORIZATION" => @token,
-          "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-        }
-        get "/bucketlists?q=Thirties", {}, headers
+        get "/bucketlists?q=Thirties", {}, @headers
       end
       it "returns status code of 200" do
         expect(response).to have_http_status 200
@@ -155,12 +155,7 @@ RSpec.describe "list all the bucketlists", type: :request do
 
     context "with invalid search querry" do
       before(:all) do
-        headers = {
-          "HTTP_AUTHORIZATION" => @token,
-          "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-        }
-        get "/bucketlists?q=party", {}, headers
+        get "/bucketlists?q=party", {}, @headers
       end
       it "returns status code of 404" do
         expect(response).to have_http_status 404

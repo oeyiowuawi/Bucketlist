@@ -1,0 +1,3 @@
+
+class AuthenticationTimeoutError < StandardError
+end

@@ -5,9 +5,7 @@ module Request
     end
 
     def token_generator(user)
-      post "/auth/login", email: user.email,
-                          password: user.password
-      json["auth_token"]
+      AuthToken.encode({ user_id: user.id }, 3600)
     end
   end
 end
