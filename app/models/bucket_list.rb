@@ -6,6 +6,6 @@ class BucketList < ActiveRecord::Base
   extend Paginate
 
   def self.search(querry)
-    where("name LIKE ?", "%#{querry}%")
+    where("LOWER(name) LIKE ?", "%#{querry.downcase}%")
   end
 end
