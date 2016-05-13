@@ -3,7 +3,8 @@ module Api
     def create
       user = User.new(users_params)
       if user.save
-        render json: user, status: 201, location: api_users_path(user)
+        render json: user, status: 201, location: api_users_path(user),
+               root: false
       else
         render json: { errors: user.errors }, status: 422
       end
