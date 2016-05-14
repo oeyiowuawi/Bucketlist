@@ -23,12 +23,12 @@ RSpec.describe Api::UsersController, type: :request do
 
   describe "when trying to sign up with invalid parameters" do
     before(:all) do
-      user = build(:invalid_user)
+      invalid_user = build(:invalid_user)
       post "/users", {
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        password_confirmation: user.password_confirmation
+        name: invalid_user.name,
+        email: invalid_user.email,
+        password: invalid_user.password,
+        password_confirmation: invalid_user.password_confirmation
       }.to_json, "Content-Type" => "application/json", "HTTP_ACCEPT" =>
       "application/vnd.bucketlist.v1"
     end

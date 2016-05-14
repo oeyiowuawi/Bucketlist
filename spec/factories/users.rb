@@ -7,7 +7,8 @@ FactoryGirl.define do
   end
 
   factory :invalid_user, parent: :user do
-    password_confirmation "test"
-    password "test"
+    short_password = "test"
+    password_confirmation short_password
+    password short_password
   end
 end
