@@ -5,7 +5,7 @@ module Request
     end
 
     def token_generator(user)
-      AuthToken.encode({ user_id: user.id }, 3600)
+      AuthToken.encode({ user_id: user.id }, 1.minutes.from_now)
     end
   end
 end

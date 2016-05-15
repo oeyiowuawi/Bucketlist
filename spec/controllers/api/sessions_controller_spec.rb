@@ -98,7 +98,7 @@ RSpec.describe Api::SessionsController, type: :request do
   describe "Expired Token" do
     before(:all) do
       user = create(:user, active_status: true)
-      token = AuthToken.encode({ user_id: user.id }, 0.0333333)
+      token = AuthToken.encode({ user_id: user.id }, 3.seconds.from_now)
       sleep 5
       headers = {
         "HTTP_AUTHORIZATION" => token,
