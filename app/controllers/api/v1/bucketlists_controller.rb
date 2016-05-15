@@ -7,8 +7,7 @@ module Api
       skip_before_action :validate_bucketlist, only: [:create, :index]
 
       def create
-        bucketlist_info = bucketlist_params.merge!(created_by: current_user.id)
-        bucketlist = BucketList.new(bucketlist_info)
+        bucketlist = current_user.bucket_lists.new(bucketlist_params)
         if bucketlist.save
           render json: bucketlist, status: 201, root: false
         else
