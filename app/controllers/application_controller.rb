@@ -28,7 +28,7 @@ class ApplicationController < ActionController::API
   end
 
   def user_id_included_in_auth_token?
-    http_auth_token && decoded_auth_token && decoded_auth_token[:user_id]
+    http_auth_token && decoded_auth_token[:user_id]
   end
 
   def decoded_auth_token

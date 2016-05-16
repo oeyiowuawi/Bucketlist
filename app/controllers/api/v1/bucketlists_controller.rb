@@ -54,7 +54,7 @@ module Api
         if bucketlist.empty?
           render json: { message: "You have no bucketlist" }, status: 200
         else
-          @bucketlists = q ? current_user.bucket_lists.search(q) : bucketlist
+          @bucketlists = q ? bucketlist.search(q) : bucketlist
         end
       end
     end
