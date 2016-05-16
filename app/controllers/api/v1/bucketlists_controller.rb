@@ -3,7 +3,7 @@ module Api
     class BucketlistsController < ApplicationController
       before_action :authenticate
       before_action :search_bucketlist, only: :index
-      include InvalidRequest
+      include Validators
       skip_before_action :validate_bucketlist, only: [:create, :index]
 
       def create
