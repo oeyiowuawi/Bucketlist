@@ -4,7 +4,7 @@ class BucketList < ActiveRecord::Base
   validates :created_by, presence: true
   has_many :items, dependent: :destroy
   extend Paginate
-
+  include Utilities
   def self.search(querry)
     where("LOWER(name) LIKE ?", "%#{querry.downcase}%")
   end

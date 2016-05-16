@@ -2,7 +2,7 @@ module Api
   module V1
     class ItemsController < ApplicationController
       before_action :authenticate
-      include InvalidRequest
+      include Validators
       skip_before_action :validate_bucketlist_item, only: :create
 
       def create

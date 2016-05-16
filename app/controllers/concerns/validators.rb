@@ -1,23 +1,20 @@
-module InvalidRequest
+module Validators
   extend ActiveSupport::Concern
 
   included do
+    rescue_from ActiveRecord::RecordNotFound do
+      render json: { errors: "Cannot locate the resource" }, status: 404
+    end
     before_action :validate_bucketlist
     before_action :validate_bucketlist_item if controller_name == "items"
   end
 
   def validate_bucketlist
     id = controller_name == "items" ? params[:bucketlist_id] : params[:id]
-    @bucketlist = current_user.bucket_lists.find_by(id: id)
-    return not_found if @bucketlist.nil?
+    @bucketlist = current_user.bucket_lists.find(id)
   end
 
   def validate_bucketlist_item
-    @item = @bucketlist.items.find_by(id: items_params[:id])
-    return not_found if @item.nil?
-  end
-
-  def not_found
-    render json: { errors: "Cannot locate the resource" }, status: 404
+    @item = @bucketlist.items.find(items_params[:id])
   end
 end

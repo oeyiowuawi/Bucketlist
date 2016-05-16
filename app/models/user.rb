@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include Utilities
   has_many :bucket_lists, foreign_key: :created_by
 
   VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\.]+[\w+]\.[a-z]+\z/i
