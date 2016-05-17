@@ -12,7 +12,7 @@ RSpec.describe "when creating an item ", type: :request do
       "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
     }
   end
-  context "using a valid request" do
+  context "when creating an item with valid data" do
     before(:each) do
       post "/bucketlists/#{@item.bucket_list.id}/items", {
         name: @item.name,
@@ -32,7 +32,7 @@ RSpec.describe "when creating an item ", type: :request do
     end
   end
 
-  context "using invalid request" do
+  context "when creating an item with valid data" do
     before(:all) do
       post "/bucketlists/#{@item.bucket_list.id}/items", {
         name: nil,

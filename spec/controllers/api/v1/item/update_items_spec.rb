@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "when updating an item in a bucketlist", type: :request do
+RSpec.describe "Updating an item in a bucketlist", type: :request do
   before(:all) do
     @item = create(:item)
     @item.bucket_list.user.update_attribute("active_status", true)
@@ -11,10 +11,11 @@ RSpec.describe "when updating an item in a bucketlist", type: :request do
       "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
     }
   end
-  context "valid request" do
+  context "when updating an item with valid data" do
     before(:all) do
+      @name = Faker::Name.name
       put "/bucketlists/#{@item.bucket_list.id}/items/#{@item.id}",
-          attributes_for(:item, name: "Alan Padew", done: true).to_json,
+          attributes_for(:item, name: @name, done: true).to_json,
           @headers
     end
 
@@ -23,36 +24,35 @@ RSpec.describe "when updating an item in a bucketlist", type: :request do
     end
 
     it "should return the updated name" do
-      expect(json["item"]["name"]).to eq "Alan Padew"
+      expect(json["item"]["name"]).to eq @name
     end
     it "should return the updated done" do
       expect(json["item"]["done"]).to eq true
     end
   end
-  context "invalid request" do
-    context "when name is not provided" do
-      before(:all) do
-        put "/bucketlists/#{@item.bucket_list.id}/items/#{@item.id}",
-            attributes_for(:item, name: nil, done: true).to_json,
-            @headers
-      end
-      it "should return a status code of 422" do
-        expect(response).to have_http_status 422
-      end
-      it "should return error message to the user" do
-        expect(json["errors"]["name"]).to eq ["can't be blank"]
-      end
+  context "when updating an item with invalid data" do
+    before(:all) do
+      put "/bucketlists/#{@item.bucket_list.id}/items/#{@item.id}",
+          attributes_for(:item, name: nil, done: true).to_json,
+          @headers
     end
+    it "should return a status code of 422" do
+      expect(response).to have_http_status 422
+    end
+    it "should return error message to the user" do
+      expect(json["errors"]["name"]).to eq ["can't be blank"]
+    end
+  end
 
-    context "when updating a bucketlist that doesn't belong to the user" do
-      before(:each) do
-        put "/bucketlists/2/items/#{@item.id}",
-            attributes_for(:item, name: @item.name, done: true).to_json,
-            @headers
-      end
-      it "should return a 404 status code" do
-        expect(response).to have_http_status 404
-      end
+  context "when updating an item in a  bucketlist that doesn't belong to "\
+    "the current user" do
+    before(:each) do
+      put "/bucketlists/2/items/#{@item.id}",
+          attributes_for(:item, name: @item.name, done: true).to_json,
+          @headers
+    end
+    it "should return a 404 status code" do
+      expect(response).to have_http_status 404
     end
   end
 end

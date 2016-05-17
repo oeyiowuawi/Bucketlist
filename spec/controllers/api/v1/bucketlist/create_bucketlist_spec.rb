@@ -11,7 +11,7 @@ RSpec.describe Api::V1::BucketlistsController, type: :request do
     }
   end
 
-  context "creating a bucketlist with invalid request and params" do
+  context "when creating a bucketlist with invalid request and params" do
     before(:all) do
       post "/bucketlists",
            { name: nil }.to_json,
@@ -26,7 +26,7 @@ RSpec.describe Api::V1::BucketlistsController, type: :request do
     end
   end
 
-  context "creating a bucketlist with valid request and params" do
+  context "when creating a bucketlist with valid request and params" do
     before(:all) do
       @bucketlist = build(:bucket_list)
       post "/bucketlists",

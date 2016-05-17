@@ -13,8 +13,8 @@ RSpec.describe "Showing Bucketlist", type: :request do
       "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
     }
   end
-  describe "when logged in," do
-    context "Bucketlists that belongs to the correct user" do
+  describe "when logged in" do
+    context "when trying to view bucketlist that belongs to the current user" do
       before(:all) do
         get "/bucketlists/#{@bucketlist1.id}", {}, @headers
       end
@@ -28,7 +28,7 @@ RSpec.describe "Showing Bucketlist", type: :request do
       end
     end
 
-    context "Bucketlist that doesn't belong to a user" do
+    context "when trying to view bucketlist that doesn't belong to the user" do
       before(:all) do
         get "/bucketlists/#{@bucketlist2.id}", {}, @headers
       end

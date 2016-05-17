@@ -15,14 +15,14 @@ RSpec.describe "when trying to delete a bucketlist", type: :request do
   end
 
   describe "as a logged In user" do
-    context "that owns the  bucketlist" do
+    context "when trying to delete bucketlist that belongs to the user" do
       it "returns a status code of 204" do
         delete "/bucketlists/#{@bucketlist1.id}", {}, @headers
         expect(response).to have_http_status 204
       end
     end
 
-    context "that doesn't own the bucketlist " do
+    context "when trying to delete bucketlist that do not belong to the user" do
       it "returns a status code of 404" do
         delete "/bucketlists/#{@bucketlist2.id}", {}, @headers
         expect(response).to have_http_status 404
