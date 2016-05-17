@@ -13,16 +13,13 @@ RSpec.describe "User", type: :model do
   end
 
   describe "create User" do
-    context "with valid User attributes" do
-      it { is_expected.to be_valid }
-    end
-
-    context "with invalid User" do
-      it "email " do
+    it { is_expected.to be_valid }
+    context "when creating user with invalid data" do
+      it "rejects invalid email " do
         subject.email = "@lekan"
         expect(subject).to be_invalid
       end
-      it "name" do
+      it "rejects invalid name" do
         subject.name = "t"
         expect(subject).to be_invalid
       end

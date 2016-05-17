@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "when deleting an item ", type: :request do
+RSpec.describe "Deleting an item ", type: :request do
   before(:all) do
     bucketlist = create(:bucket_list)
     @item1, @item2 = create_list(:item, 2, bucket_list: bucketlist)
@@ -13,7 +13,8 @@ RSpec.describe "when deleting an item ", type: :request do
       "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
     }
   end
-  context "in a bucketlist with valid parameters" do
+  context "when deleting an item in a bucketlist that belongs to the current "\
+    "user" do
     before(:each) do
       delete "/bucketlists/#{@item1.bucket_list.id}/items/#{@item1.id}", {},
              @headers
@@ -29,7 +30,7 @@ RSpec.describe "when deleting an item ", type: :request do
     end
   end
 
-  context "in a bucketlist with invalid item id " do
+  context "when deleting an item that doesn't belong to the current user" do
     before(:each) do
       delete "/bucketlists/#{@item1.bucket_list.id}/items/3", {}, @headers
     end
@@ -43,7 +44,8 @@ RSpec.describe "when deleting an item ", type: :request do
     end
   end
 
-  context "in a bucketlist that do not belong to user " do
+  context "when deleting an item in a bucketlist that do not belong to current"\
+    " user" do
     before(:each) do
       delete "/bucketlists/2/items/#{@item2.id}", {}.to_json, @headers
     end

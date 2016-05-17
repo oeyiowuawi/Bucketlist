@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Api::UsersController, type: :request do
-  describe "when trying to sign up with valid parameters" do
+  context "when trying to sign up with valid parameters" do
     before(:all) do
       @user = build(:user)
       post "/users", {
@@ -21,7 +21,7 @@ RSpec.describe Api::UsersController, type: :request do
     end
   end
 
-  describe "when trying to sign up with invalid parameters" do
+  context "when trying to sign up with invalid parameters" do
     before(:all) do
       invalid_user = build(:invalid_user)
       post "/users", {
