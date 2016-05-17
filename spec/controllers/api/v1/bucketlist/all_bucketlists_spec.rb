@@ -23,7 +23,7 @@ RSpec.describe "list all the bucketlists", type: :request do
     end
   end
 
-  context "with valid request" do
+  context "when the user has bucketlist" do
     before(:each) do
       create_list(:bucket_list, 3, created_by: @user.id)
       create(:bucket_list)
@@ -45,7 +45,7 @@ RSpec.describe "list all the bucketlists", type: :request do
     end
   end
 
-  context "invalid request" do
+  context "when user has an incomplete request" do
     before(:each) do
       headers = {
         "HTTP_AUTHORIZATION" => nil,
@@ -136,7 +136,7 @@ RSpec.describe "list all the bucketlists", type: :request do
       create(:bucket_list, name: "Mid Twenties", user: @user)
     end
 
-    context "with valid search querry" do
+    context "when searching with valid search query" do
       before(:all) do
         get "/bucketlists?q=Thirties", {}, @headers
       end
@@ -153,7 +153,7 @@ RSpec.describe "list all the bucketlists", type: :request do
       end
     end
 
-    context "with invalid search querry" do
+    context "when searching with invalid search query" do
       before(:all) do
         get "/bucketlists?q=party", {}, @headers
       end
