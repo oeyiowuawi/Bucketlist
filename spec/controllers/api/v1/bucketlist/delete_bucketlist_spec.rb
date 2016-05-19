@@ -16,9 +16,14 @@ RSpec.describe "when trying to delete a bucketlist", type: :request do
 
   describe "as a logged In user" do
     context "when trying to delete bucketlist that belongs to the user" do
-      it "returns a status code of 204" do
+      before(:all) do
         delete "/bucketlists/#{@bucketlist1.id}", {}, @headers
-        expect(response).to have_http_status 204
+      end
+      it "returns a status code of 200" do
+        expect(response).to have_http_status 200
+      end
+      it "should return a message to the user" do
+        expect(json["message"]).to include "deleted"
       end
     end
 

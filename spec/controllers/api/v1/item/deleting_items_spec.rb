@@ -20,8 +20,12 @@ RSpec.describe "Deleting an item ", type: :request do
              @headers
     end
 
-    it "should return a 204 status" do
-      expect(response).to have_http_status 204
+    it "should return a 200 status" do
+      expect(response).to have_http_status 200
+    end
+
+    it "should return a message to the user" do
+      expect(json["message"]).to include "deleted"
     end
 
     it "should return the appropriate number of items" do

@@ -39,7 +39,7 @@ module Api
 
       def destroy
         @bucketlist.destroy
-        head 204
+        render json: { message: "Successfully deleted" }, status: 200
       end
 
       private
@@ -54,7 +54,7 @@ module Api
         if bucketlist.empty?
           render json: { message: "You have no bucketlist" }, status: 200
         else
-          @bucketlists = querry ? bucketlist.search(q) : bucketlist
+          @bucketlists = querry ? bucketlist.search(querry) : bucketlist
         end
       end
     end
