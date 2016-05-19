@@ -17,7 +17,7 @@ RSpec.describe Api::UsersController, type: :request do
     end
 
     it "returns the newly created user" do
-      expect(json["name"]).to eq @user.name
+      expect(json["user"]["name"]).to eq @user.name
     end
   end
 

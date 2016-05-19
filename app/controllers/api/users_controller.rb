@@ -3,8 +3,15 @@ module Api
     def create
       user = User.new(users_params)
       if user.save
-        render json: user, status: 201, location: api_users_path(user),
-               root: false
+        response = { user: UserSerializer.new(user) }.merge!(
+          user.authentication_payload
+        )
+        render(
+          json: response,
+          status: 201,
+          location: api_users_path(user),
+          root: false
+        )
       else
         render json: { errors: user.errors }, status: 422
       end
@@ -13,7 +20,12 @@ module Api
     private
 
     def users_params
-      params.permit(:name, :email, :password, :password_confirmation)
+      params.permit(
+        :name,
+        :email,
+        :password,
+        :password_confirmation
+      )
     end
   end
 end

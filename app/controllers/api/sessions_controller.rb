@@ -4,7 +4,7 @@ module Api
     def login
       user = User.find_by_credentials(auth_params)
       if user
-        render json: authentication_payload(user), status: 200
+        render json: user.authentication_payload, status: 200
       else
         render json: { error: "Invalid username or password" },
                status: :unauthorized
@@ -20,10 +20,6 @@ module Api
 
     def auth_params
       params.permit(:email, :password)
-    end
-
-    def authentication_payload(user)
-      { auth_token: AuthToken.encode(user_id: user.id) }
     end
   end
 end
