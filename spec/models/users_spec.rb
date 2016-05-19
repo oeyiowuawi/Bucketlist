@@ -44,5 +44,4 @@ RSpec.describe "User", type: :model do
       expect(subject.authentication_payload[:auth_token]).to be_truthy
     end
   end
-
 end
