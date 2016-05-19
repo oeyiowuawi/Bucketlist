@@ -5,6 +5,7 @@ class ApplicationController < ActionController::API
   rescue_from NotAuthenticatedError, with: :user_not_authenticated
 
   attr_reader :current_user
+  
   def authenticate
     fail NotAuthenticatedError unless user_id_included_in_auth_token?
     @current_user = User.find(decoded_auth_token[:user_id])
@@ -16,15 +17,19 @@ class ApplicationController < ActionController::API
   end
 
   def invalid_endpoint
-    render json: { error: "Invalid Endpoint. Read The Api doc and try again" },
-           status: 404
+    render(
+      json: { error: "Invalid Endpoint. Read The Api doc and try again" },
+      status: 404
+    )
   end
 
   private
 
   def check_logged_in
-    render json: { error: "You must be logged in to access this resource " },
-           status: 401 unless current_user.active_status
+    render(
+      json: { error: "You must be logged in to access this resource " },
+      status: 401 unless current_user.active_status
+    )
   end
 
   def user_id_included_in_auth_token?
@@ -46,7 +51,9 @@ class ApplicationController < ActionController::API
   end
 
   def user_not_authenticated
-    render json: { errors: "Not Authenticated. invalid or missing token" },
-           status: :unauthorized
+    render(
+      json: { errors: "Not Authenticated. invalid or missing token" },
+      status: :unauthorized
+    )
   end
 end
