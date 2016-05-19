@@ -37,4 +37,12 @@ RSpec.describe "User", type: :model do
       expect(User.find_by_credentials(auth_params)).to eq nil
     end
   end
+
+  describe "#authentication_payload" do
+    it "returns a token when called" do
+      subject.save
+      expect(subject.authentication_payload[:auth_token]).to be_truthy
+    end
+  end
+
 end
