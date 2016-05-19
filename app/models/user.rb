@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  before_create :set_status
+
   include Utilities
   has_many :bucket_lists, foreign_key: :created_by
 
@@ -16,5 +18,13 @@ class User < ActiveRecord::Base
       user.update_attribute("active_status", true)
       user
     end
+  end
+
+  def authentication_payload
+    { auth_token: AuthToken.encode(user_id: id) }
+  end
+
+  def set_status
+    self.active_status = true
   end
 end
