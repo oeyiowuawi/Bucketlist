@@ -20,7 +20,7 @@ module Api
         if @bucketlists.empty?
           render json: { errors: "No result found" }, status: 404
         else
-          render json: @bucketlists.generate_paginate(params), status: 200,
+          render json: @bucketlists.paginate(params), status: 200,
                  root: false
         end
       end
