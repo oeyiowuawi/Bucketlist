@@ -6,8 +6,10 @@ module Api
       if user
         render json: user.authentication_payload, status: 200
       else
-        render json: { error: "Invalid username or password" },
-               status: :unauthorized
+        render(
+          json: { error: "Invalid username or password" },
+          status: :unauthorized
+        )
       end
     end
 

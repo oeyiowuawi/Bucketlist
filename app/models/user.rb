@@ -1,11 +1,11 @@
 class User < ActiveRecord::Base
-  before_create :set_status
-
   include Utilities
+
   has_many :bucket_lists, foreign_key: :created_by
 
   VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\.]+[\w+]\.[a-z]+\z/i
-  before_save { self.email = email.downcase }
+
+  before_create :set_status
   validates :name, presence: true, length: { minimum: 2 }
   validates :password, presence: true, length: { minimum: 7 }
   validates :email, presence: true, format: { with: VALID_EMAIL },

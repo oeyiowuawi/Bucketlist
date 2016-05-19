@@ -11,8 +11,11 @@ module Api
         if bucketlist.save
           render json: bucketlist, status: 201, root: false
         else
-          render json: { message: "Bucketlist couldn't be created",
-                         error: bucketlist.errors }, status: 422
+          render(
+            json: { message: "Bucketlist couldn't be created",
+                    error: bucketlist.errors },
+            status: 422
+          )
         end
       end
 
@@ -20,8 +23,11 @@ module Api
         if @bucketlists.empty?
           render json: { errors: "No result found" }, status: 404
         else
-          render json: @bucketlists.generate_paginate(params), status: 200,
-                 root: false
+          render(
+            json: @bucketlists.paginate(params),
+            status: 200,
+            root: false
+          )
         end
       end
 
@@ -39,7 +45,7 @@ module Api
 
       def destroy
         @bucketlist.destroy
-        head 204
+        render json: { message: "Successfully deleted" }, status: 200
       end
 
       private
@@ -49,12 +55,12 @@ module Api
       end
 
       def search_bucketlist
-        q = params[:q]
+        querry = params[:q]
         bucketlist = current_user.bucket_lists
         if bucketlist.empty?
           render json: { message: "You have no bucketlist" }, status: 200
         else
-          @bucketlists = q ? bucketlist.search(q) : bucketlist
+          @bucketlists = querry ? bucketlist.search(querry) : bucketlist
         end
       end
     end

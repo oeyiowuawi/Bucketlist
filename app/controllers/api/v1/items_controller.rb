@@ -24,7 +24,7 @@ module Api
 
       def destroy
         @item.destroy
-        head 204
+        render json: { message: "Successfully deleted" }, status: 200
       end
 
       private
