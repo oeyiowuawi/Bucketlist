@@ -13,7 +13,7 @@ module Api
         else
           render(
             json: { message: "Bucketlist couldn't be created",
-            error: bucketlist.errors },
+                    error: bucketlist.errors },
             status: 422
           )
         end

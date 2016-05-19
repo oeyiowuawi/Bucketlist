@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
   rescue_from NotAuthenticatedError, with: :user_not_authenticated
 
   attr_reader :current_user
-  
+
   def authenticate
     fail NotAuthenticatedError unless user_id_included_in_auth_token?
     @current_user = User.find(decoded_auth_token[:user_id])
@@ -28,8 +28,7 @@ class ApplicationController < ActionController::API
   def check_logged_in
     render(
       json: { error: "You must be logged in to access this resource " },
-      status: 401 unless current_user.active_status
-    )
+      status: 401) unless current_user.active_status
   end
 
   def user_id_included_in_auth_token?
