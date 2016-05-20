@@ -12,6 +12,22 @@ e-list is an API service that allows users create bucketlists to store items. Bu
 
 For full access to the API, a user account is required. After registration, an initial request is made to log in to user account. This request generates a JSON Web Token, which is returned in the response. This token is used to authenticate subsequent requests to the API.
 
+## API EndPoints
+
+The following endpoints are available
+
+| EndPoint                                |   Functionality                      |
+| --------------------------------------- | ------------------------------------:|
+| POST /auth/login                        | Logs a user in                       |
+| GET /auth/logout                        | Logs a user out                      |
+| POST /bucketlists/                      | Create a new bucket list             |
+| GET /bucketlists/                       | List all the created bucket lists    |
+| GET /bucketlists/:id                    | Get single bucket list               |
+| PUT /bucketlists/:id                    | Update this bucketlist               |
+| DELETE /bucketlists/:id                 | Delete this single bucketlist        |
+| POST /bucketlists/:id/items/            | Create a new item in bucketlist      |
+| PUT /bucketlists/:id/items/:item_id     | Update a bucketlist item             |
+| DELETE /bucketlists/:id/items/:item_id  | Delete an item in a bucket lists     |
 
 ## Dependencies
 
@@ -44,24 +60,6 @@ Run the following command from the terminal to get all tests running
 ```
 rspec spec
 ```
-
-## API EndPoints
-
-The following endpoints are available
-
-| EndPoint                                |   Functionality                      |
-| --------------------------------------- | ------------------------------------:|
-| POST /auth/login                        | Logs a user in                       |
-| GET /auth/logout                        | Logs a user out                      |
-| POST /bucketlists/                      | Create a new bucket list             |
-| GET /bucketlists/                       | List all the created bucket lists    |
-| GET /bucketlists/:id                    | Get single bucket list               |
-| PUT /bucketlists/:id                    | Update this bucketlist               |
-| DELETE /bucketlists/:id                 | Delete this single bucketlist        |
-| POST /bucketlists/:id/items/            | Create a new item in bucketlist      |
-| PUT /bucketlists/:id/items/:item_id     | Update a bucketlist item             |
-| DELETE /bucketlists/:id/items/:item_id  | Delete an item in a bucket lists     |
-
 
 ## Versioning
 Changes and upgrades are made from time to time in this API. The API is versioned to avoid code breaking. New changes are implemented under a new version. Currently, the Api handles versioning through headers using the ```ACCEPT``` header. Simply add ```application/vnd.bucketlist.v1``` to your accept header to use version 1. To use subsequent versions of the api, just change v1 to v2 or other versions you want.
