@@ -5,8 +5,11 @@ class AuthToken
   end
 
   def self.decode(token)
-    decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base,
-                               true, algorithm: "HS256")
+    decoded_token = JWT.decode(
+      token, Rails.application.secrets.secret_key_base,
+      true,
+      algorithm: "HS256"
+    )
     HashWithIndifferentAccess.new(decoded_token[0])
   end
 end

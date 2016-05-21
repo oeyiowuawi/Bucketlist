@@ -44,11 +44,11 @@ module Api
 
       def search_bucketlist
         querry = params[:q]
-        bucketlist = current_user.bucket_lists
-        if bucketlist.empty?
+        bucketlists = current_user.bucket_lists
+        if bucketlists.empty?
           render json: { message: messages.no_bucket_list }, status: 200
         else
-          @bucketlists = querry ? bucketlist.search(querry) : bucketlist
+          @bucketlists = querry ? bucketlists.search(querry) : bucketlists
         end
       end
     end

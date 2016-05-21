@@ -13,7 +13,7 @@ RSpec.describe Api::UsersController, type: :request do
           password_confirmation: @user.password
         }.to_json,
         "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        "ACCEPT" => "application/vnd.Bucketlist.v1"
       )
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Api::UsersController, type: :request do
         "/users",
         attributes_for(:invalid_user) .to_json,
         "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        "ACCEPT" => "application/vnd.Bucketlist.v1"
       )
     end
 
