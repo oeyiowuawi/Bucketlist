@@ -7,7 +7,7 @@ module Api
         render json: user.authentication_payload, status: 200
       else
         render(
-          json: { error: "Invalid username or password" },
+          json: { error: messages.bad_authentication },
           status: :unauthorized
         )
       end
@@ -15,7 +15,7 @@ module Api
 
     def destroy
       current_user.update_attribute("active_status", false)
-      render json: { message: "You have been logged out" }, status: 200
+      render json: { message: messages.logout }, status: 200
     end
 
     private

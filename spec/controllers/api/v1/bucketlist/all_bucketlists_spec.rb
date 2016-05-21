@@ -5,9 +5,9 @@ RSpec.describe "list all the bucketlists", type: :request do
     @user = create(:user, active_status: true)
     token = token_generator(@user)
     @headers = {
-      "HTTP_AUTHORIZATION" => token,
+      "AUTHORIZATION" => token,
       "Content-Type" => "application/json",
-      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      "ACCEPT" => "application/vnd.Bucketlist.v1"
     }
   end
 
@@ -15,16 +15,18 @@ RSpec.describe "list all the bucketlists", type: :request do
     before(:all) do
       get "/bucketlists", {}, @headers
     end
+
     it "returns a status code of 200" do
       expect(response).to have_http_status 200
     end
+
     it "returns a message for the user " do
-      expect(json["message"]).to eq "You have no bucketlist"
+      expect(json["message"]).to eq messages.no_bucket_list
     end
   end
 
   context "when the user has bucketlist" do
-    before(:each) do
+    before(:all) do
       create_list(:bucket_list, 3, created_by: @user.id)
       create(:bucket_list)
       get "/bucketlists", {}, @headers
@@ -36,28 +38,31 @@ RSpec.describe "list all the bucketlists", type: :request do
 
     it "return bucketlist belonging to current user" do
       user_id = []
-      json.each { |hsh| user_id << hsh["created_by"] }
+      json.each { |record| user_id << record["created_by"] }
       contain_user_id = user_id.all? { |id| id == @user.id }
       expect(contain_user_id).to eq true
     end
+
     it "should return a count of 3" do
       expect(json.count).to eq 3
     end
   end
 
-  context "when user has an incomplete request" do
-    before(:each) do
+  context "when user has no token " do
+    before(:all) do
       headers = {
-        "HTTP_AUTHORIZATION" => nil,
+        "AUTHORIZATION" => nil,
         "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        "ACCEPT" => "application/vnd.Bucketlist.v1"
       }
 
       post "/bucketlists", { name: nil }.to_json, headers
     end
+
     it "should return errors for non-logged-in user" do
-      expect(json["errors"]).to include "Not Authenticated"
+      expect(json["errors"]).to include messages.not_authenticated
     end
+
     it "should return a unauthorized status code" do
       expect(response).to have_http_status 401
     end
@@ -65,10 +70,11 @@ RSpec.describe "list all the bucketlists", type: :request do
 
   describe "Pagination" do
     before(:all) do
+      BucketList.destroy_all
       @bucketlist = create_list(:bucket_list, 30, created_by: @user.id)
     end
 
-    context "when requesting with only page parameter" do
+    context "when requesting for page 2 with no limit supplied" do
       before(:all) do
         get "/bucketlists?page=2", {}, @headers
       end
@@ -76,22 +82,19 @@ RSpec.describe "list all the bucketlists", type: :request do
       it "should return just 10 bucketlists" do
         expect(json.count).to eq 10
       end
+
       it "should return a status code of 200" do
         expect(response).to have_http_status 200
       end
+
       it "should return the correct bucketlist" do
-        names = json.map { |hsh| hsh["name"] }
-        a = 0
-        b = 20
-        10.times do
-          expect(names[a]).to eq @bucketlist[b]["name"]
-          a += 1
-          b += 1
-        end
+        names = json.map { |record| record["name"] }
+        expect(names[0]).to eq @bucketlist[20]["name"]
+        expect(names[9]).to eq @bucketlist[29]["name"]
       end
     end
 
-    context "when requesting with only limit" do
+    context "when requesting with only limit of 5 " do
       before(:all) do
         get "/bucketlists?limit=5", {}, @headers
       end
@@ -113,18 +116,15 @@ RSpec.describe "list all the bucketlists", type: :request do
       it "returns a status code of 200" do
         expect(response).to have_http_status 200
       end
+
       it "returns the right number of bucketlist" do
         expect(json.count).to eq 5
       end
+
       it "returns the right bucketlists" do
         names = json.map { |hsh| hsh["name"] }
-        a = 0
-        b = 5
-        5.times do
-          expect(names[a]).to eq @bucketlist[b]["name"]
-          a += 1
-          b += 1
-        end
+        expect(names[0]).to eq @bucketlist[5]["name"]
+        expect(names[4]).to eq @bucketlist[9]["name"]
       end
     end
   end
@@ -136,32 +136,37 @@ RSpec.describe "list all the bucketlists", type: :request do
       create(:bucket_list, name: "Mid Twenties", user: @user)
     end
 
-    context "when searching with valid search query" do
+    context "when searching with a query that has a result" do
       before(:all) do
         get "/bucketlists?q=Thirties", {}, @headers
       end
+
       it "returns status code of 200" do
         expect(response).to have_http_status 200
       end
+
       it "returns the correct number of bucketlists" do
         expect(json.count).to eq 2
       end
+
       it "return bucketlist belonging to current user" do
-        bucket_list_name = json.map { |hsh| hsh["name"] }
+        bucket_list_name = json.map { |record| record["name"] }
         result = bucket_list_name.all? { |name| name.include? "Thirties" }
         expect(result).to eq true
       end
     end
 
-    context "when searching with invalid search query" do
+    context "when searching with a query that has no result" do
       before(:all) do
         get "/bucketlists?q=party", {}, @headers
       end
+
       it "returns status code of 404" do
         expect(response).to have_http_status 404
       end
-      it "returns the correct number of bucketlists" do
-        expect(json["errors"]).to include "No result found"
+
+      it "returns the appropriate error message" do
+        expect(json["errors"]).to include messages.no_result_found
       end
     end
   end

@@ -3,7 +3,7 @@ module Validators
 
   included do
     rescue_from ActiveRecord::RecordNotFound do
-      render json: { errors: "Cannot locate the resource" }, status: 404
+      render json: { errors: messages.resource_not_found }, status: 404
     end
     before_action :validate_bucketlist
     before_action :validate_bucketlist_item if controller_name == "items"

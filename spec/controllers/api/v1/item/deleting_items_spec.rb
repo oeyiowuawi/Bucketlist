@@ -8,16 +8,20 @@ RSpec.describe "Deleting an item ", type: :request do
     @user.update_attribute("active_status", true)
     token = token_generator(@user)
     @headers = {
-      "HTTP_AUTHORIZATION" => token,
+      "AUTHORIZATION" => token,
       "Content-Type" => "application/json",
-      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      "ACCEPT" => "application/vnd.Bucketlist.v1"
     }
   end
+
   context "when deleting an item in a bucketlist that belongs to the current "\
     "user" do
-    before(:each) do
-      delete "/bucketlists/#{@item1.bucket_list.id}/items/#{@item1.id}", {},
-             @headers
+    before(:all) do
+      delete(
+        "/bucketlists/#{@item1.bucket_list.id}/items/#{@item1.id}",
+        {},
+        @headers
+      )
     end
 
     it "should return a 200 status" do
@@ -25,7 +29,7 @@ RSpec.describe "Deleting an item ", type: :request do
     end
 
     it "should return a message to the user" do
-      expect(json["message"]).to include "deleted"
+      expect(json["message"]).to include messages.deleted
     end
 
     it "should return the appropriate number of items" do
@@ -35,7 +39,7 @@ RSpec.describe "Deleting an item ", type: :request do
   end
 
   context "when deleting an item that doesn't belong to the current user" do
-    before(:each) do
+    before(:all) do
       delete "/bucketlists/#{@item1.bucket_list.id}/items/3", {}, @headers
     end
 
@@ -44,13 +48,13 @@ RSpec.describe "Deleting an item ", type: :request do
     end
 
     it "should return error message" do
-      expect(json["errors"]).to include "Cannot locate the resource"
+      expect(json["errors"]).to include messages.resource_not_found
     end
   end
 
   context "when deleting an item in a bucketlist that do not belong to current"\
     " user" do
-    before(:each) do
+    before(:all) do
       delete "/bucketlists/2/items/#{@item2.id}", {}.to_json, @headers
     end
 
@@ -59,7 +63,26 @@ RSpec.describe "Deleting an item ", type: :request do
     end
 
     it "should return error message" do
-      expect(json["errors"]).to include "Cannot locate the resource"
+      expect(json["errors"]).to include messages.resource_not_found
+    end
+  end
+
+  context "when a user tries to delete item without passing a token" do
+    before(:all) do
+      delete(
+        "/bucketlists/2/items/#{@item2.id}",
+        {},
+        "Content-Type" => "application/json",
+        "ACCEPT" => "application/vnd.Bucketlist.v1"
+      )
+    end
+
+    it "returns a status code of 401" do
+      expect(response).to have_http_status 401
+    end
+
+    it "returns a NotAuthenticatedError " do
+      expect(json["errors"]).to include messages.not_authenticated
     end
   end
 end
