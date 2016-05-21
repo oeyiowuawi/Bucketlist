@@ -1,7 +1,7 @@
 module AuthHelpers
   def check_logged_in
     render(
-      json: { error: "You must be logged in to access this resource " },
+      json: { error: messages.must_be_logged_in },
       status: 401) unless current_user.active_status
   end
 
@@ -20,12 +20,12 @@ module AuthHelpers
   end
 
   def authentication_timeout
-    render json: { errors: "Expired Token" }, status: 401
+    render json: { errors: messages.expired_token }, status: 401
   end
 
   def user_not_authenticated
     render(
-      json: { errors: "Not Authenticated. invalid or missing token" },
+      json: { errors: messages.not_authenticated },
       status: :unauthorized
     )
   end

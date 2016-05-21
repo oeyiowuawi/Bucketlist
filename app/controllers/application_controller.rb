@@ -19,8 +19,12 @@ class ApplicationController < ActionController::API
 
   def invalid_endpoint
     render(
-      json: { error: "Invalid Endpoint. Read The Api doc and try again" },
+      json: { error: messages.invalid_endpoint },
       status: 404
     )
+  end
+
+  def messages
+    Messages.new
   end
 end

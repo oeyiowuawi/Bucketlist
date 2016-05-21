@@ -3,28 +3,20 @@ module Api
     class ItemsController < ApplicationController
       before_action :authenticate
       include Validators
+      include ResourceHelpers
       skip_before_action :validate_bucketlist_item, only: :create
 
       def create
         item = @bucketlist.items.new(items_params.except(:bucketlist_id))
-        if item.save
-          render json: item, status: 201
-        else
-          render json: { errors: item.errors }, status: 422
-        end
+        create_helper(item)
       end
 
       def update
-        if @item.update(items_params.except(:bucketlist_id))
-          render json: @item, status: 200
-        else
-          render json: { errors: @item.errors }, status: 422
-        end
+        update_helper(@item, items_params.except(:bucketlist_id))
       end
 
       def destroy
-        @item.destroy
-        render json: { message: "Successfully deleted" }, status: 200
+        destroy_helper(@item)
       end
 
       private

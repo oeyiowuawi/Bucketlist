@@ -11,9 +11,11 @@ RSpec.describe Api::SessionsController, type: :request do
           "Content-Type" => "application/json",
           "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
         }
-        post "/auth/login", {
-          email: @user.email,
-          password: @user.password }.to_json, header
+        post(
+          "/auth/login", {
+            email: @user.email,
+            password: @user.password }.to_json, header
+        )
       end
 
       it "returns a status code of 200" do
@@ -33,103 +35,120 @@ RSpec.describe Api::SessionsController, type: :request do
           "Content-Type" => "application/json",
           "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
         }
-        post "/auth/login", {
-          email: @user.email,
-          password: invalid_password }.to_json, header
+        post(
+          "/auth/login", {
+            email: @user.email,
+            password: invalid_password }.to_json, header
+        )
       end
       it "returns a 401 status code" do
         expect(response).to have_http_status :unauthorized
       end
       it "returns ivalid username or password error" do
-        expect(json["error"]).to eq "Invalid username or password"
+        expect(json["error"]).to eq messages.bad_authentication
       end
     end
   end
 
   describe "log out" do
-    it "allows logged in users to log out" do
-      user = @user
-      user.update_attribute("active_status", true)
-      headers = {
-        "HTTP_AUTHORIZATION" => token_generator(user),
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
+    context "when logged in users try to log out" do
+      before(:all) do
+        user = @user
+        user.update_attribute("active_status", true)
+        headers = {
+          "HTTP_AUTHORIZATION" => token_generator(user),
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
+        get "/auth/logout", {}, headers
+      end
 
-      get "/auth/logout", {}, headers
+      it "returns a status code of 200" do
+        expect(response).to have_http_status 200
+      end
 
-      expect(response).to have_http_status 200
-      expect(json["message"]).to eq "You have been logged out"
-    end
-    it "throws error for non-logged in users to login first" do
-      headers = {
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-
-      get "/auth/logout", {}, headers
-      expect(json["errors"]).to include "Not Authenticated"
-    end
-  end
-
-  describe "Non-logged in user with valid token" do
-    before(:all) do
-      token = token_generator(@user)
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      get "/auth/logout", {}, headers
-
-      get "/bucketlists", {}, "HTTP_AUTHORIZATION" => token,
-                              "Content-Type" => "application/json",
-                              "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      it "returns the log out message" do
+        expect(json["message"]).to eq messages.logout
+      end
     end
 
-    it " returns a status code of 401" do
-      expect(response).to have_http_status 401
-    end
-    it " returns an error message " do
-      expect(json["error"]).to include "You must be logged in"
-    end
-  end
+    context "when non-logged in users without a token try to log out" do
+      it "shows appropriate error message" do
+        headers = {
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
 
-  describe "Expired Token" do
-    before(:all) do
-      user = create(:user, active_status: true)
-      token = AuthToken.encode({ user_id: user.id }, 3.seconds.from_now)
-      sleep 5
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      get "/bucketlists", {}, headers
+        get "/auth/logout", {}, headers
+        expect(json["errors"]).to include messages.not_authenticated
+      end
     end
-    it "returns a status code of 401" do
-      expect(response).to have_http_status 401
+
+    context "when Non-logged in user with valid token try to log out" do
+      before(:all) do
+        token = token_generator(@user)
+        headers = {
+          "HTTP_AUTHORIZATION" => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
+        get "/auth/logout", {}, headers
+
+        get "/bucketlists", {}, "HTTP_AUTHORIZATION" => token,
+                                "Content-Type" => "application/json",
+                                "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      end
+
+      it " returns a status code of 401" do
+        expect(response).to have_http_status 401
+      end
+
+      it " returns an error message " do
+        expect(json["error"]).to include messages.must_be_logged_in
+      end
     end
-    it "returns the appropriate error message" do
-      expect(json["errors"]).to eq "Expired Token"
+
+    context "when a logged-in user with Expired Token tries to log out " do
+      before(:all) do
+        user = create(:user, active_status: true)
+        token = AuthToken.encode({ user_id: user.id }, 3.seconds.from_now)
+        sleep 5
+        headers = {
+          "HTTP_AUTHORIZATION" => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
+        get "/auth/logout", {}, headers
+      end
+
+      it "returns a status code of 401" do
+        expect(response).to have_http_status 401
+      end
+
+      it "returns the appropriate error message" do
+        expect(json["errors"]).to eq messages.expired_token
+      end
     end
-  end
-  describe "Invalid Token" do
-    before(:all) do
-      user = create(:user)
-      token = token_generator(user) << "invalid"
-      headers = {
-        "HTTP_AUTHORIZATION" => token,
-        "Content-Type" => "application/json",
-        "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
-      }
-      get "/bucketlists", {}, headers
-    end
-    it "returns a status code of 401" do
-      expect(response).to have_http_status 401
-    end
-    it "returns the appropriate error message" do
-      expect(json["errors"]).to include "invalid or missing token"
+
+    context "when a logged-in user with Invalid Token tries to log out" do
+      before(:all) do
+        user = create(:user, active_status: true)
+        token = token_generator(user) << "invalid"
+        headers = {
+          "HTTP_AUTHORIZATION" => token,
+          "Content-Type" => "application/json",
+          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        }
+        get "/bucketlists", {}, headers
+      end
+
+      it "returns a status code of 401" do
+        expect(response).to have_http_status 401
+      end
+
+      it "returns the appropriate error message" do
+        expect(json["errors"]).to include messages.not_authenticated
+      end
     end
   end
 end

@@ -19,11 +19,17 @@ RSpec.describe BucketList, type: :model do
       create(:bucket_list, name: "Hahaha", created_by: user.id)
       @user_bucketlists = User.find(user.id).bucket_lists
     end
-    it "returns the correct result when passed in the right queery" do
-      expect(@user_bucketlists.search("in gidi").count).to eq 2
+
+    context "when searching through the with a querry that has result" do
+      it "returns the correct number of records found" do
+        expect(@user_bucketlists.search("in gidi").count).to eq 2
+      end
     end
-    it "returns nil when given a wrong queery string" do
-      expect(@user_bucketlists.search("in the zhenghen").count).to eq 0
+
+    context "when searching with a querry that doessn't have a result" do
+      it "returns an empty record" do
+        expect(@user_bucketlists.search("in the zhenghen").empty?).to eq true
+      end
     end
   end
 end

@@ -4,13 +4,13 @@ RSpec.describe "Invalid Endpoint", type: :request do
     @user = create(:user, active_status: true)
     token = token_generator(@user)
     @headers = {
-      "HTTP_AUTHORIZATION" => token,
+      "AUTHORIZATION" => token,
       "Content-Type" => "application/json",
-      "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+      "ACCEPT" => "application/vnd.Bucketlist.v1"
     }
   end
 
-  describe "invalid get requests" do
+  context "when using a get request to an invalid endpoint " do
     before(:all) do
       get "/bucketlist", {}, @header
     end
@@ -18,12 +18,13 @@ RSpec.describe "Invalid Endpoint", type: :request do
     it "should return a status code of 404" do
       expect(response).to have_http_status 404
     end
+
     it "should a message to the consumer to read the API doc" do
       expect(json["error"]).to include "Read The Api doc"
     end
   end
 
-  describe "invalid post requests" do
+  context "when using a post request to an invalid endpoint" do
     before(:all) do
       post "/bucketlist", { name: Faker::Lorem.words(4) }, @header
     end
@@ -31,12 +32,13 @@ RSpec.describe "Invalid Endpoint", type: :request do
     it "should return a status code of 404" do
       expect(response).to have_http_status 404
     end
+
     it "should a message to the consumer to read the API doc" do
       expect(json["error"]).to include "Invalid Endpoint"
     end
   end
 
-  describe "invalid put requests" do
+  context "when using a put request to an invalid endpoint" do
     before(:all) do
       put "/bucketlist/1", { name: Faker::Lorem.words(4) }, @header
     end
@@ -44,12 +46,13 @@ RSpec.describe "Invalid Endpoint", type: :request do
     it "should return a status code of 404" do
       expect(response).to have_http_status 404
     end
+
     it "should a message to the consumer to read the API doc" do
       expect(json["error"]).to include "Read The Api doc and try again"
     end
   end
 
-  describe "invalid delete requests" do
+  context "when using a delete request to an invalid endpoint" do
     before(:all) do
       delete "/bucketlist/1", { name: Faker::Lorem.words(4) }, @header
     end
@@ -57,6 +60,7 @@ RSpec.describe "Invalid Endpoint", type: :request do
     it "should return a status code of 404" do
       expect(response).to have_http_status 404
     end
+
     it "should a message to the consumer to read the API doc" do
       expect(json["error"]).to include "Read The Api doc and try again"
     end
