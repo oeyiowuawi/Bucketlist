@@ -62,7 +62,7 @@ rspec spec
 ```
 
 ## Versioning
-Changes and upgrades are made from time to time in this API. The API is versioned to avoid code breaking. New changes are implemented under a new version. Currently, the Api handles versioning through headers using the ```ACCEPT``` header. Simply add ```application/vnd.bucketlist.v1``` to your accept header to use version 1. To use subsequent versions of the api, just change v1 to v2 or other versions you want.
+Changes and upgrades are made from time to time in this API. The API is versioned to avoid code breaking. New changes are implemented under a new version. Currently, the Api handles versioning through headers using the ```ACCEPT``` header. Simply add ```application/vnd.Bucketlist.v1``` to your accept header to use version 1. To use subsequent versions of the api, just change v1 to v2 or other versions you want.
 
 ## Limitations
 The API only responds with json, and does not yet have support for xml and other response types.
