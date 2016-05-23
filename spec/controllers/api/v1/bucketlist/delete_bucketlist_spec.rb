@@ -23,7 +23,7 @@ RSpec.describe "Deleting Bucketlist", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "should return a message to the user" do
+    it "should return success message" do
       expect(json["message"]).to include messages.deleted
     end
   end
@@ -35,7 +35,7 @@ RSpec.describe "Deleting Bucketlist", type: :request do
     end
   end
 
-  context "deletes items when deleting bucketlist" do
+  context "when deleting bucketlist that has 3 items" do
     it "should reduce item count by 3" do
       bucketlist = create(:bucket_list, created_by: @user1.id)
       create_list(:item, 3, bucket_list: bucketlist)

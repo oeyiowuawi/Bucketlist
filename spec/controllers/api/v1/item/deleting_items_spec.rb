@@ -29,7 +29,7 @@ RSpec.describe "Deleting an item ", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "should return a message to the user" do
+    it "should return success message to the user" do
       expect(json["message"]).to include messages.deleted
     end
 

@@ -131,7 +131,7 @@ RSpec.describe Api::SessionsController, type: :request do
         expect(response).to have_http_status 401
       end
 
-      it "returns the appropriate error message" do
+      it "returns expired token error" do
         expect(json["errors"]).to eq messages.expired_token
       end
     end
@@ -152,7 +152,7 @@ RSpec.describe Api::SessionsController, type: :request do
         expect(response).to have_http_status 401
       end
 
-      it "returns the appropriate error message" do
+      it "returns Not Authenticated error " do
         expect(json["errors"]).to include messages.not_authenticated
       end
     end

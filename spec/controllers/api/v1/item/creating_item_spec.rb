@@ -35,7 +35,7 @@ RSpec.describe "Creating item ", type: :request do
     end
   end
 
-  context "when creating an item with invalid data" do
+  context "when creating an item with invalid name attribute" do
     before(:all) do
       post(
         "/bucketlists/#{@item.bucket_list.id}/items",
@@ -48,7 +48,7 @@ RSpec.describe "Creating item ", type: :request do
       expect(response).to have_http_status 422
     end
 
-    it "should return error message" do
+    it "should return can't be blank error" do
       expect(json["errors"]["name"]).to eq ["can't be blank"]
     end
   end

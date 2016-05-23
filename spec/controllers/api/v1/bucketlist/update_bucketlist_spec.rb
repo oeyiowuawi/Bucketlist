@@ -47,7 +47,7 @@ RSpec.describe "Update Bucketlist", type: :request do
       expect(response).to have_http_status 422
     end
 
-    it "return the appropriate error message to the user" do
+    it "return 'cant be blank' error" do
       expect(json["errors"]["name"]).to eq ["can't be blank"]
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe "Update Bucketlist", type: :request do
       expect(response).to have_http_status 404
     end
 
-    it "returns a message to the User" do
+    it "returns resource not found message" do
       expect(json["errors"]).to include messages.resource_not_found
     end
   end

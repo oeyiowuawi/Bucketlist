@@ -11,7 +11,7 @@ RSpec.describe "Creating Bucketlist", type: :request do
     }
   end
 
-  context "when creating a bucketlist with invalid request and params" do
+  context "when creating a bucketlist with invalid data" do
     before(:all) do
       post(
         "/bucketlists",
@@ -29,7 +29,7 @@ RSpec.describe "Creating Bucketlist", type: :request do
     end
   end
 
-  context "when creating a bucketlist with valid request and params" do
+  context "when creating a bucketlist with valid data" do
     before(:all) do
       @bucketlist = build(:bucket_list)
       post(
