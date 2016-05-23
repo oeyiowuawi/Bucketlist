@@ -4,6 +4,7 @@ RSpec.describe "Deleting an item ", type: :request do
   before(:all) do
     bucketlist = create(:bucket_list)
     @item1, @item2 = create_list(:item, 2, bucket_list: bucketlist)
+    @item3 = create(:item)
     @user = @item1.bucket_list.user
     @user.update_attribute("active_status", true)
     token = token_generator(@user)
@@ -40,7 +41,11 @@ RSpec.describe "Deleting an item ", type: :request do
 
   context "when deleting an item that doesn't belong to the current user" do
     before(:all) do
-      delete "/bucketlists/#{@item1.bucket_list.id}/items/3", {}, @headers
+      delete(
+        "/bucketlists/#{@item1.bucket_list.id}/items/#{@item3.id}",
+        {},
+        @headers
+      )
     end
 
     it "should return a status code of 404" do

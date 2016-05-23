@@ -14,7 +14,7 @@ RSpec.describe "Creating item ", type: :request do
   end
 
   context "when creating an item with valid data" do
-    before(:each) do
+    before(:all) do
       post(
         "/bucketlists/#{@item.bucket_list.id}/items",
         { name: @item.name, done: @item.done }.to_json,
