@@ -11,7 +11,7 @@ RSpec.describe "Creating Bucketlist", type: :request do
     }
   end
 
-  context "when creating a bucketlist with invalid request and params" do
+  context "when creating a bucketlist with invalid data" do
     before(:all) do
       post(
         "/bucketlists",
@@ -23,12 +23,13 @@ RSpec.describe "Creating Bucketlist", type: :request do
     it "should include name 'is blank' error" do
       expect(json["errors"]["name"]).to eq ["can't be blank"]
     end
+
     it "return a 422 status" do
       expect(response).to have_http_status 422
     end
   end
 
-  context "when creating a bucketlist with valid request and params" do
+  context "when creating a bucketlist with valid data" do
     before(:all) do
       @bucketlist = build(:bucket_list)
       post(

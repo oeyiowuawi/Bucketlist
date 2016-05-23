@@ -20,12 +20,12 @@ RSpec.describe "list all the bucketlists", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "returns a message for the user " do
+    it "returns 'no bucketlist' message" do
       expect(json["message"]).to eq messages.no_bucket_list
     end
   end
 
-  context "when the user has bucketlist" do
+  context "when the user has 3 bucketlist" do
     before(:all) do
       create_list(:bucket_list, 3, created_by: @user.id)
       create(:bucket_list)
@@ -59,7 +59,7 @@ RSpec.describe "list all the bucketlists", type: :request do
       post "/bucketlists", { name: nil }.to_json, headers
     end
 
-    it "should return errors for non-logged-in user" do
+    it "should return NotAuthenticatedError" do
       expect(json["errors"]).to include messages.not_authenticated
     end
 
@@ -74,7 +74,7 @@ RSpec.describe "list all the bucketlists", type: :request do
       @bucketlist = create_list(:bucket_list, 30, created_by: @user.id)
     end
 
-    context "when requesting for page 2 with no limit supplied" do
+    context "when user has 30 bucketlists and requests for page 2" do
       before(:all) do
         get "/bucketlists?page=2", {}, @headers
       end
@@ -94,7 +94,7 @@ RSpec.describe "list all the bucketlists", type: :request do
       end
     end
 
-    context "when requesting with only limit of 5 " do
+    context "when user has 30 bucketlist and requests with only limit of 5 " do
       before(:all) do
         get "/bucketlists?limit=5", {}, @headers
       end
@@ -103,7 +103,7 @@ RSpec.describe "list all the bucketlists", type: :request do
         expect(response).to have_http_status 200
       end
 
-      it "returns the number of results based on the provided limit" do
+      it "returns 5 records" do
         expect(json.count).to eq 5
       end
     end
@@ -136,7 +136,7 @@ RSpec.describe "list all the bucketlists", type: :request do
       create(:bucket_list, name: "Mid Twenties", user: @user)
     end
 
-    context "when searching with a query that has a result" do
+    context "when search query returns result" do
       before(:all) do
         get "/bucketlists?q=Thirties", {}, @headers
       end
@@ -156,7 +156,7 @@ RSpec.describe "list all the bucketlists", type: :request do
       end
     end
 
-    context "when searching with a query that has no result" do
+    context "when search query doesn't return result" do
       before(:all) do
         get "/bucketlists?q=party", {}, @headers
       end
@@ -165,7 +165,7 @@ RSpec.describe "list all the bucketlists", type: :request do
         expect(response).to have_http_status 404
       end
 
-      it "returns the appropriate error message" do
+      it "returns 'no result found' message" do
         expect(json["errors"]).to include messages.no_result_found
       end
     end

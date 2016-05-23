@@ -2,7 +2,8 @@ module AuthHelpers
   def check_logged_in
     render(
       json: { error: messages.must_be_logged_in },
-      status: 401) unless current_user.active_status
+      status: 401
+    ) unless current_user.active_status
   end
 
   def user_id_included_in_auth_token?

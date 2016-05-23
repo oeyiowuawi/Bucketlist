@@ -20,7 +20,7 @@ RSpec.describe "Invalid Endpoint", type: :request do
     end
 
     it "should a message to the consumer to read the API doc" do
-      expect(json["error"]).to include "Read The Api doc"
+      expect(json["error"]).to include messages.invalid_endpoint
     end
   end
 
@@ -34,7 +34,7 @@ RSpec.describe "Invalid Endpoint", type: :request do
     end
 
     it "should a message to the consumer to read the API doc" do
-      expect(json["error"]).to include "Invalid Endpoint"
+      expect(json["error"]).to include messages.invalid_endpoint
     end
   end
 
@@ -48,7 +48,7 @@ RSpec.describe "Invalid Endpoint", type: :request do
     end
 
     it "should a message to the consumer to read the API doc" do
-      expect(json["error"]).to include "Read The Api doc and try again"
+      expect(json["error"]).to include messages.invalid_endpoint
     end
   end
 
@@ -62,7 +62,7 @@ RSpec.describe "Invalid Endpoint", type: :request do
     end
 
     it "should a message to the consumer to read the API doc" do
-      expect(json["error"]).to include "Read The Api doc and try again"
+      expect(json["error"]).to include messages.invalid_endpoint
     end
   end
 end

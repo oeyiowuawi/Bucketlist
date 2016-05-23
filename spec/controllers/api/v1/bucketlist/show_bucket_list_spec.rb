@@ -37,7 +37,7 @@ RSpec.describe "Showing Bucketlist", type: :request do
       expect(response).to have_http_status 404
     end
 
-    it "returns an error message telling the user what the issue is" do
+    it "returns resource_not_found message" do
       expect(json["errors"]).to include messages.resource_not_found
     end
   end
@@ -52,7 +52,7 @@ RSpec.describe "Showing Bucketlist", type: :request do
       get "/bucketlists/#{@bucketlist1.id}", {}, headers
     end
 
-    it "should return errors for non-logged-in user" do
+    it "should return NotAuthenticatedError " do
       expect(json["errors"]).to include messages.not_authenticated
     end
 

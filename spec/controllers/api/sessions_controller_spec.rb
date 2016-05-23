@@ -9,7 +9,7 @@ RSpec.describe Api::SessionsController, type: :request do
       before(:all) do
         header = {
           "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          "ACCEPT" => "application/vnd.Bucketlist.v1"
         }
         post(
           "/auth/login", {
@@ -33,7 +33,7 @@ RSpec.describe Api::SessionsController, type: :request do
 
         header = {
           "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          "ACCEPT" => "application/vnd.Bucketlist.v1"
         }
         post(
           "/auth/login", {
@@ -41,9 +41,11 @@ RSpec.describe Api::SessionsController, type: :request do
             password: invalid_password }.to_json, header
         )
       end
+
       it "returns a 401 status code" do
         expect(response).to have_http_status :unauthorized
       end
+
       it "returns ivalid username or password error" do
         expect(json["error"]).to eq messages.bad_authentication
       end
@@ -56,9 +58,9 @@ RSpec.describe Api::SessionsController, type: :request do
         user = @user
         user.update_attribute("active_status", true)
         headers = {
-          "HTTP_AUTHORIZATION" => token_generator(user),
+          "AUTHORIZATION" => token_generator(user),
           "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          "ACCEPT" => "application/vnd.bucketlist.v1"
         }
         get "/auth/logout", {}, headers
       end
@@ -76,7 +78,7 @@ RSpec.describe Api::SessionsController, type: :request do
       it "shows appropriate error message" do
         headers = {
           "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          "ACCEPT" => "application/vnd.Bucketlist.v1"
         }
 
         get "/auth/logout", {}, headers
@@ -88,15 +90,19 @@ RSpec.describe Api::SessionsController, type: :request do
       before(:all) do
         token = token_generator(@user)
         headers = {
-          "HTTP_AUTHORIZATION" => token,
+          "AUTHORIZATION" => token,
           "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          "ACCEPT" => "application/vnd.Bucketlist.v1"
         }
         get "/auth/logout", {}, headers
 
-        get "/bucketlists", {}, "HTTP_AUTHORIZATION" => token,
-                                "Content-Type" => "application/json",
-                                "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+        get(
+          "/bucketlists",
+          {},
+          "AUTHORIZATION" => token,
+          "Content-Type" => "application/json",
+          "ACCEPT" => "application/vnd.Bucketlist.v1"
+        )
       end
 
       it " returns a status code of 401" do
@@ -114,9 +120,9 @@ RSpec.describe Api::SessionsController, type: :request do
         token = AuthToken.encode({ user_id: user.id }, 3.seconds.from_now)
         sleep 5
         headers = {
-          "HTTP_AUTHORIZATION" => token,
+          "AUTHORIZATION" => token,
           "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          "ACCEPT" => "application/vnd.Bucketlist.v1"
         }
         get "/auth/logout", {}, headers
       end
@@ -125,7 +131,7 @@ RSpec.describe Api::SessionsController, type: :request do
         expect(response).to have_http_status 401
       end
 
-      it "returns the appropriate error message" do
+      it "returns expired token error" do
         expect(json["errors"]).to eq messages.expired_token
       end
     end
@@ -135,9 +141,9 @@ RSpec.describe Api::SessionsController, type: :request do
         user = create(:user, active_status: true)
         token = token_generator(user) << "invalid"
         headers = {
-          "HTTP_AUTHORIZATION" => token,
+          "AUTHORIZATION" => token,
           "Content-Type" => "application/json",
-          "HTTP_ACCEPT" => "application/vnd.bucketlist.v1"
+          "ACCEPT" => "application/vnd.Bucketlist.v1"
         }
         get "/bucketlists", {}, headers
       end
@@ -146,7 +152,7 @@ RSpec.describe Api::SessionsController, type: :request do
         expect(response).to have_http_status 401
       end
 
-      it "returns the appropriate error message" do
+      it "returns Not Authenticated error " do
         expect(json["errors"]).to include messages.not_authenticated
       end
     end
