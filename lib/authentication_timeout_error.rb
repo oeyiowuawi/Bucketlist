@@ -1,3 +1,2 @@
-
 class AuthenticationTimeoutError < StandardError
 end
