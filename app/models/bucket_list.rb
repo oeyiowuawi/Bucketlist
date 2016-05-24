@@ -1,6 +1,5 @@
 class BucketList < ActiveRecord::Base
   extend Paginate
-  include Utilities
 
   has_many :items, dependent: :destroy
   belongs_to :user, foreign_key: :created_by
