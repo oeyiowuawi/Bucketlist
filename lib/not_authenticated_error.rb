@@ -1,3 +1,2 @@
-
 class NotAuthenticatedError < StandardError
 end
