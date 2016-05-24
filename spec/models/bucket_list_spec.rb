@@ -20,13 +20,13 @@ RSpec.describe BucketList, type: :model do
       @user_bucketlists = User.find(user.id).bucket_lists
     end
 
-    context "when searching through the with a querry that has result" do
+    context "when searching with a query that produces a result" do
       it "returns the correct number of records found" do
         expect(@user_bucketlists.search("in gidi").count).to eq 2
       end
     end
 
-    context "when searching with a querry that doessn't have a result" do
+    context "when searching with a query that doesn't have a result" do
       it "returns an empty record" do
         expect(@user_bucketlists.search("in the zhenghen").empty?).to eq true
       end

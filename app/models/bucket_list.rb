@@ -7,7 +7,7 @@ class BucketList < ActiveRecord::Base
   validates :name, presence: true
   validates :created_by, presence: true
 
-  def self.search(querry)
-    where("LOWER(name) LIKE ?", "%#{querry.downcase}%")
+  def self.search(query)
+    where("LOWER(name) LIKE ?", "%#{query.downcase}%")
   end
 end
