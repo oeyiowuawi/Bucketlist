@@ -21,7 +21,7 @@ RSpec.describe "Creating Bucketlist", type: :request do
     end
 
     it "should include name 'is blank' error" do
-      expect(json["errors"]["name"]).to eq ["can't be blank"]
+      expect(json["errors"]["name"]).to be_truthy
     end
 
     it "return a 422 status" do

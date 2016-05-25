@@ -49,7 +49,7 @@ RSpec.describe "Updating an item in a bucketlist", type: :request do
     end
 
     it "should return error message to the user" do
-      expect(json["errors"]["name"]).to eq ["can't be blank"]
+      expect(json["errors"]["name"]).to be_truthy
     end
   end
 

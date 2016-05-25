@@ -5,7 +5,7 @@ RSpec.describe Api::SessionsController, type: :request do
     @user = create(:user)
   end
   describe "Log in" do
-    context "when trying to log in with with valid credential" do
+    context "when trying to log in with valid credential" do
       before(:all) do
         header = {
           "Content-Type" => "application/json",
