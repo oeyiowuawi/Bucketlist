@@ -9,6 +9,7 @@ gem "spring", group: :development
 gem "bcrypt"
 gem "jwt"
 gem "active_model_serializers"
+gem "rack-cors", require: "rack/cors"
 group :test, :development do
   gem "sqlite3"
   gem "rspec-rails"
