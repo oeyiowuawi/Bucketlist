@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   end
 
   def authentication_payload
-    { auth_token: AuthToken.encode(user_id: id) }
+    { auth_token: AuthToken.encode(user_id: id), name: name }
   end
 
   def set_status
