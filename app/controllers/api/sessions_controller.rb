@@ -2,6 +2,7 @@ module Api
   class SessionsController < ApplicationController
     before_action :authenticate, only: :destroy
     def login
+      puts params
       user = User.find_by_credentials(auth_params)
       if user
         render json: user.authentication_payload, status: 200
