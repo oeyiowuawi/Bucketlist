@@ -9,6 +9,7 @@ module Api
 
       def create
         bucketlist = current_user.bucket_lists.new(bucketlist_params)
+        binding.pry
         create_helper(bucketlist)
       end
 
