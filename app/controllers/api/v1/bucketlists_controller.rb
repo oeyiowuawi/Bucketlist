@@ -9,7 +9,7 @@ module Api
 
       def create
         bucketlist = current_user.bucket_lists.new(bucketlist_params)
-        puts params
+        puts request
         create_helper(bucketlist)
       end
 

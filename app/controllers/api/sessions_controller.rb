@@ -14,6 +14,8 @@ module Api
     end
 
     def destroy
+      puts request
+      puts params
       current_user.update_attribute("active_status", false)
       render json: { message: messages.logout }, status: 200
     end
